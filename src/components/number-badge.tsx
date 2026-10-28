@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 
-import { colors, fontFamily, fontSize, radius, spacing } from '@/constants/theme';
+import { colors, fontFamily, fontSize, maxFontScale, radius, spacing } from '@/constants/theme';
 import { formatNumber } from '@/services/pokemon';
 
 type Props = {
@@ -11,7 +11,7 @@ type Props = {
 export function NumberBadge({ id }: Props) {
   return (
     <View style={styles.badge}>
-      <Text style={styles.text}>{formatNumber(id)}</Text>
+      <Text style={styles.text} maxFontSizeMultiplier={maxFontScale.chip}>{formatNumber(id)}</Text>
     </View>
   );
 }

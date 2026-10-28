@@ -4,14 +4,16 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ErrorState } from '@/components/error-state';
 import { PokemonGrid, PokemonGridSkeleton } from '@/components/pokemon-grid';
-import { colors, fontFamily, fontSize, iconSize, spacing } from '@/constants/theme';
+import { colors, fontFamily, fontSize, iconSize, maxFontScale, spacing } from '@/constants/theme';
 import { useFavorites, useToggleFavorite } from '@/hooks/use-favorites';
 
 export default function FavoritesScreen() {
   const { favorites, isFavorite, isPending, isError, refetch } = useFavorites();
   const toggleFavorite = useToggleFavorite();
 
-  const title = <Text style={styles.title}>My favorites</Text>;
+  const title = <Text style={styles.title} accessibilityRole="header" maxFontSizeMultiplier={maxFontScale.title}>
+      My favorites
+    </Text>;
 
   function renderContent() {
     if (isPending) {
@@ -28,7 +30,7 @@ export default function FavoritesScreen() {
         ListHeaderComponent={title}
         ListEmptyComponent={
           <View style={styles.empty}>
-            <MaterialIcons name="favorite-border" size={iconSize.md} color={colors.textMuted} />
+            <MaterialIcons name="favorite-border" size={iconSize.md} color={colors.textMuted} aria-hidden />
             <Text style={styles.emptyTitle}>No favorites yet</Text>
             <Text style={styles.emptyText}>Tap the heart on a Pokémon to keep it here.</Text>
           </View>

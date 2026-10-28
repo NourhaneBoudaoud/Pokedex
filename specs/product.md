@@ -58,6 +58,7 @@ Look up a Pokémon.
 - [x] Optimistic update: the heart and the favourites list change at once and roll back if the write fails (#5)
 - [x] Tests: one file per feature on the logic, `npm test` passes (#8)
 - [x] CI: lint, tsc and tests on every push (#9)
+- [x] Accessibility: every button has a role and a label for VoiceOver and TalkBack, selected tab and favourite state announced, decorative elements hidden, screens still work with the largest text size (#13)
 
 ## Out of scope
 

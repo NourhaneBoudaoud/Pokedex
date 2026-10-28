@@ -20,7 +20,11 @@ type Props = {
 const PULSE_MS = 800;
 const MIN_OPACITY = 0.4;
 
+// Spread on the view that holds a whole placeholder, so a screen reader announces it once.
+export const loadingProps = { accessible: true, accessibilityLabel: 'Loading' } as const;
+
 // A grey block in the shape of content that is still loading. It pulses so the user sees something is happening.
+// Hidden from screen readers: the placeholder around the blocks says "Loading" once (see `loadingProps`).
 export function Skeleton({ width, height, radius = radii.sm, style }: Props) {
   const opacity = useSharedValue(1);
 
@@ -37,7 +41,7 @@ export function Skeleton({ width, height, radius = radii.sm, style }: Props) {
   return (
     <Animated.View
       style={[{ width, height, borderRadius: radius, backgroundColor: colors.skeleton }, style, pulse]}
-      accessibilityLabel="Loading"
+      aria-hidden
     />
   );
 }

@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 
-import { colors, fontFamily, fontSize, getTypeColor, radius, spacing } from '@/constants/theme';
+import { colors, fontFamily, fontSize, getTypeColor, maxFontScale, radius, spacing } from '@/constants/theme';
 import { formatName } from '@/services/pokemon';
 
 type Props = {
@@ -9,10 +9,13 @@ type Props = {
 };
 
 export function TypePill({ type }: Props) {
+  const name = formatName(type);
   return (
-    <View style={styles.pill}>
-      <View style={[styles.dot, { backgroundColor: getTypeColor(type) }]} />
-      <Text style={styles.label}>{formatName(type)}</Text>
+    <View style={styles.pill} accessible accessibilityLabel={`Type: ${name}`}>
+      <View style={[styles.dot, { backgroundColor: getTypeColor(type) }]} aria-hidden />
+      <Text style={styles.label} maxFontSizeMultiplier={maxFontScale.chip}>
+        {name}
+      </Text>
     </View>
   );
 }

@@ -13,7 +13,7 @@ type Props = {
 export function ErrorState({ message = 'Something went wrong.', onRetry, compact = false }: Props) {
   return (
     <View style={[styles.container, compact && styles.compact]}>
-      {!compact && <MaterialIcons name="error-outline" size={iconSize.md} color={colors.textMuted} />}
+      {!compact && <MaterialIcons name="error-outline" size={iconSize.md} color={colors.textMuted} aria-hidden />}
       <Text style={styles.message}>{message}</Text>
       <Pressable
         style={({ pressed }) => [styles.button, pressed && styles.pressed]}
@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
     padding: spacing.md,
   },
   message: {
+    flexShrink: 1,
     fontFamily: fontFamily.regular,
     fontSize: fontSize.sm,
     color: colors.textSecondary,

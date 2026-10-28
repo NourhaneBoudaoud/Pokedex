@@ -1,6 +1,6 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { colors, fontFamily, fontSize, spacing } from '@/constants/theme';
+import { colors, fontFamily, fontSize, maxFontScale, spacing } from '@/constants/theme';
 
 export const DETAIL_TABS = ['About', 'Stats', 'Evolution'] as const;
 
@@ -11,10 +11,16 @@ type Props = {
   onChange: (tab: DetailTab) => void;
 };
 
+// On iOS the "tab" and "tablist" roles give VoiceOver nothing to announce, so the label says it is a tab and
+// where it is. TalkBack on Android announces the role itself.
+function tabLabel(tab: DetailTab, index: number) {
+  return Platform.OS === 'ios' ? `${tab}, tab ${index + 1} of ${DETAIL_TABS.length}` : tab;
+}
+
 export function DetailTabs({ active, onChange }: Props) {
   return (
     <View style={styles.container} accessibilityRole="tablist">
-      {DETAIL_TABS.map((tab) => {
+      {DETAIL_TABS.map((tab, index) => {
         const selected = tab === active;
         return (
           <Pressable
@@ -22,9 +28,16 @@ export function DetailTabs({ active, onChange }: Props) {
             style={[styles.tab, selected && styles.tabActive]}
             onPress={() => onChange(tab)}
             accessibilityRole="tab"
+            accessibilityLabel={tabLabel(tab, index)}
             accessibilityState={{ selected }}
           >
-            <Text style={[styles.label, selected && styles.labelActive]}>{tab}</Text>
+            <Text
+              style={[styles.label, selected && styles.labelActive]}
+              numberOfLines={1}
+              maxFontSizeMultiplier={maxFontScale.tab}
+            >
+              {tab}
+            </Text>
           </Pressable>
         );
       })}

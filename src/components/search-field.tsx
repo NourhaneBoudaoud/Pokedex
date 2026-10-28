@@ -16,11 +16,14 @@ export function SearchField({ onPress }: SearchFieldProps) {
     <Pressable
       style={styles.field}
       onPress={onPress}
-      accessibilityRole="search"
+      accessibilityRole="button"
       accessibilityLabel="Search for Pokémon"
+      accessibilityHint="Opens the search screen"
     >
       <MaterialIcons name="search" size={iconSize.md} color={colors.text} />
-      <Text style={styles.placeholder}>{SEARCH_PLACEHOLDER}</Text>
+      <Text style={styles.placeholder} numberOfLines={1}>
+        {SEARCH_PLACEHOLDER}
+      </Text>
     </Pressable>
   );
 }
@@ -59,7 +62,7 @@ const FIELD_HEIGHT = 48;
 
 const styles = StyleSheet.create({
   field: {
-    height: FIELD_HEIGHT,
+    minHeight: FIELD_HEIGHT,
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.ms,
@@ -69,13 +72,14 @@ const styles = StyleSheet.create({
     ...shadow,
   },
   placeholder: {
+    flexShrink: 1,
     fontFamily: fontFamily.regular,
     fontSize: fontSize.md,
     color: colors.textFaint,
   },
   input: {
     flex: 1,
-    height: FIELD_HEIGHT,
+    minHeight: FIELD_HEIGHT,
     fontFamily: fontFamily.regular,
     fontSize: fontSize.md,
     color: colors.text,
