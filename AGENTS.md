@@ -25,7 +25,12 @@ add a line here: what it is and where it lives.
   Use `fontFamily.*` in styles, never a font name as a string.
 - API client: `src/services/api-client.ts`, `apiGet<T>(path)`. Every PokeAPI request goes through it; it throws `ApiError`.
 - Pokémon helpers: `src/services/pokemon.ts` (`PokemonSummary`, `getIdFromUrl`, `getSpriteUrl`, `formatNumber`, `formatName`).
-- Query client: `src/services/query-client.ts`, provided in `src/app/_layout.tsx`.
+- Query client: `src/services/query-client.ts`, provided in `src/app/_layout.tsx` by `PersistQueryClientProvider`: the
+  cache is saved in `expo-sqlite/kv-store` (`queryPersister`) and restored at start, `gcTime` = `CACHE_MAX_AGE`,
+  `networkMode: 'always'` (offline fails at once). A screen shows its error state only when it has no data
+  (`isError && !data`), so saved data stays when a refresh fails.
+- Network: `isOffline(state)` and `connectOnlineManager()` in `src/services/network.ts` (expo-network), in screens
+  `useNetworkStatus()` (`src/hooks/use-network-status.ts`). `OfflineBanner` is shown once, in `src/app/_layout.tsx`.
 - Icons: `@expo/vector-icons/MaterialIcons` (same set as the Figma), sizes from `iconSize`.
 - UI: `PokemonGrid` (`src/components/pokemon-grid.tsx`, 2 columns of `PokemonCard`, tap → detail, ⋮ → card menu) for every
   grid of Pokémon, `ErrorState` (message + Retry, `compact` for the end of a list) for every failed load,

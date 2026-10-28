@@ -36,6 +36,9 @@ export default function CompareScreen() {
   const right = usePokemonDetail(rightId ?? 0);
   const search = usePokemonSearch(text);
   const largeText = useLargeText();
+  // Saved data stays on screen when a refresh fails offline.
+  const leftError = left.isError && !left.data;
+  const rightError = right.isError && !right.data;
 
   function pick(pokemon: PokemonSummary) {
     if (picking === 'left') {
@@ -60,7 +63,7 @@ export default function CompareScreen() {
           onChangeText={setText}
           results={search.results}
           isPending={search.isPending}
-          isError={search.isError}
+          isError={search.isError && !search.data}
           onRetry={() => search.refetch()}
           onPick={pick}
           onBack={closePicker}
@@ -81,14 +84,14 @@ export default function CompareScreen() {
         </Text>
       );
     }
-    if (left.isError || right.isError) {
+    if (leftError || rightError) {
       return (
         <ErrorState
           compact
           message="Could not load the stats."
           onRetry={() => {
-            if (left.isError) left.refetch();
-            if (right.isError) right.refetch();
+            if (leftError) left.refetch();
+            if (rightError) right.refetch();
           }}
         />
       );
@@ -115,7 +118,7 @@ export default function CompareScreen() {
             position="first"
             pokemon={slotPokemon(leftId, left.data?.name)}
             isPending={left.isPending}
-            isError={left.isError}
+            isError={leftError}
             onPress={() => setPicking('left')}
             onRetry={() => left.refetch()}
           />
@@ -123,7 +126,7 @@ export default function CompareScreen() {
             position="second"
             pokemon={slotPokemon(rightId, right.data?.name)}
             isPending={right.isPending}
-            isError={right.isError}
+            isError={rightError}
             onPress={() => setPicking('right')}
             onRetry={() => right.refetch()}
           />

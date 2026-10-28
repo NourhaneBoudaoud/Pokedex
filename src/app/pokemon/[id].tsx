@@ -66,7 +66,8 @@ export default function PokemonDetailScreen() {
   }
 
   function renderBody() {
-    if (isError || !Number.isInteger(id)) {
+    // Saved data stays on screen when a refresh fails offline.
+    if ((isError && !pokemon) || !Number.isInteger(id)) {
       return <ErrorState message="Could not load this Pokémon." onRetry={() => refetch()} />;
     }
     if (isPending) {
@@ -119,7 +120,7 @@ export default function PokemonDetailScreen() {
             <EvolutionTab
               chain={evolution.data}
               isPending={evolution.isPending}
-              isError={evolution.isError}
+              isError={evolution.isError && !evolution.data}
               onRetry={() => evolution.refetch()}
               onOpen={openPokemon}
             />

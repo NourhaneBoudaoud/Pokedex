@@ -1,13 +1,17 @@
-import { QueryClientProvider } from '@tanstack/react-query';
+import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
+import { StyleSheet, View } from 'react-native';
 
+import { OfflineBanner } from '@/components/offline-banner';
 import { colors } from '@/constants/theme';
 import { useAppFonts } from '@/hooks/use-app-fonts';
-import { queryClient } from '@/services/query-client';
+import { connectOnlineManager } from '@/services/network';
+import { CACHE_MAX_AGE, cacheBuster, queryClient, queryPersister } from '@/services/query-client';
 
 SplashScreen.preventAutoHideAsync();
+connectOnlineManager();
 
 export default function RootLayout() {
   const { loaded, error } = useAppFonts();
@@ -25,13 +29,27 @@ export default function RootLayout() {
   }
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <Stack
-        screenOptions={{
-          headerShown: false,
-          contentStyle: { backgroundColor: colors.background },
-        }}
-      />
-    </QueryClientProvider>
+    // The cache is saved on the phone and restored at start, so data already seen is there offline.
+    <PersistQueryClientProvider
+      client={queryClient}
+      persistOptions={{ persister: queryPersister, maxAge: CACHE_MAX_AGE, buster: cacheBuster }}
+    >
+      <View style={styles.container}>
+        <OfflineBanner />
+        <Stack
+          screenOptions={{
+            headerShown: false,
+            contentStyle: { backgroundColor: colors.background },
+          }}
+        />
+      </View>
+    </PersistQueryClientProvider>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: colors.background,
+  },
+});
