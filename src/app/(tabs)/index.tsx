@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ErrorState } from '@/components/error-state';
 import { PokemonGrid, PokemonGridSkeleton } from '@/components/pokemon-grid';
 import { SearchField } from '@/components/search-field';
-import { colors, fontFamily, fontSize, spacing } from '@/constants/theme';
+import { colors, fontFamily, fontSize, maxFontScale, spacing } from '@/constants/theme';
 import { useFavorites, useToggleFavorite } from '@/hooks/use-favorites';
 import { usePokemonList } from '@/hooks/use-pokemon-list';
 
@@ -23,7 +23,9 @@ export default function HomeScreen() {
   const { isFavorite } = useFavorites();
   const toggleFavorite = useToggleFavorite();
 
-  const title = <Text style={styles.title}>All Pokémon</Text>;
+  const title = <Text style={styles.title} accessibilityRole="header" maxFontSizeMultiplier={maxFontScale.title}>
+      All Pokémon
+    </Text>;
 
   function renderContent() {
     if (isPending) {

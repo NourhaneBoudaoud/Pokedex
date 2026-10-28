@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { ErrorState } from '@/components/error-state';
 import { PokemonRow, PokemonRowSkeleton, ROW_HEIGHT } from '@/components/pokemon-row';
+import { loadingProps } from '@/components/skeleton';
 import { colors, fontFamily, fontSize, spacing } from '@/constants/theme';
 import type { PokemonSummary } from '@/services/pokemon';
 
@@ -41,7 +42,7 @@ const SKELETON_CARDS = [0, 1, 2];
 
 function EvolutionSkeleton() {
   return (
-    <View>
+    <View {...loadingProps}>
       {SKELETON_CARDS.map((card) => (
         <Fragment key={card}>
           {card > 0 && <DottedLine />}
@@ -56,7 +57,7 @@ const DOTS = [0, 1, 2];
 
 function DottedLine() {
   return (
-    <View style={styles.line}>
+    <View style={styles.line} aria-hidden>
       {DOTS.map((dot) => (
         <View key={dot} style={styles.dot} />
       ))}

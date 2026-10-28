@@ -95,3 +95,14 @@ export const fontSize = {
   title: 24,
   name: 32,
 } as const;
+
+// Upper limit of the system text size (maxFontSizeMultiplier) for text that cannot grow freely:
+// fixed-height badge and pills, the three detail tabs side by side, and the big Cabinet Grotesk titles.
+export const maxFontScale = {
+  chip: 1.5,
+  tab: 1.3,
+  title: 1.5,
+} as const;
+
+// From this system text size on, layouts switch to one column so names and values have room to wrap.
+export const largeTextScale = 1.5;

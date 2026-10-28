@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 
 import { colors, fontFamily, fontSize, spacing } from '@/constants/theme';
+import { useLargeText } from '@/hooks/use-large-text';
 import {
   formatHeight,
   formatLabel,
@@ -15,6 +16,7 @@ type Props = {
 };
 
 export function AboutTab({ pokemon }: Props) {
+  const largeText = useLargeText();
   const rows = [
     { label: 'Name', value: formatName(pokemon.name) },
     { label: 'ID', value: formatNumber(pokemon.id) },
@@ -28,8 +30,9 @@ export function AboutTab({ pokemon }: Props) {
   return (
     <View style={styles.container}>
       {rows.map((row) => (
-        <View key={row.label} style={styles.row}>
-          <Text style={styles.label}>{row.label}</Text>
+        // Label above the value with a large text size: the label column is too narrow for it.
+        <View key={row.label} style={[styles.row, largeText && styles.rowStacked]}>
+          <Text style={[styles.label, largeText && styles.labelStacked]}>{row.label}</Text>
           <Text style={styles.value}>{row.value}</Text>
         </View>
       ))}
@@ -48,12 +51,18 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
   },
+  rowStacked: {
+    flexDirection: 'column',
+  },
   label: {
     width: LABEL_WIDTH,
     fontFamily: fontFamily.medium,
     fontSize: fontSize.sm,
     lineHeight: LINE_HEIGHT,
     color: colors.text,
+  },
+  labelStacked: {
+    width: 'auto',
   },
   value: {
     flex: 1,

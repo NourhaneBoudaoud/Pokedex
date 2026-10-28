@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 
-import { Skeleton } from '@/components/skeleton';
+import { loadingProps, Skeleton } from '@/components/skeleton';
 import { colors, fontFamily, fontSize, radius, spacing } from '@/constants/theme';
 import type { StatComparison } from '@/services/compare';
 import { formatStatName, statBarRatio } from '@/services/pokemon';
@@ -58,7 +58,7 @@ const LABEL_WIDTH = 96;
 
 export function CompareStatsSkeleton() {
   return (
-    <View style={styles.container}>
+    <View style={styles.container} {...loadingProps}>
       {SKELETON_ROWS.map((row) => (
         <View key={row} style={styles.row}>
           <Skeleton width={LABEL_WIDTH} height={fontSize.sm} style={styles.skeletonLabel} />
@@ -94,7 +94,8 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
   },
   value: {
-    width: VALUE_WIDTH,
+    // Min, not fixed: a large text size makes "255" wider.
+    minWidth: VALUE_WIDTH,
     fontSize: fontSize.sm,
   },
   valueRight: {

@@ -3,6 +3,7 @@ import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { ErrorState } from '@/components/error-state';
 import { PokemonRow, PokemonRowSkeleton } from '@/components/pokemon-row';
 import { SearchInput } from '@/components/search-field';
+import { loadingProps } from '@/components/skeleton';
 import { colors, fontFamily, fontSize, spacing } from '@/constants/theme';
 import type { PokemonSummary } from '@/services/pokemon';
 
@@ -24,7 +25,7 @@ export function ComparePicker({ text, onChangeText, results, isPending, isError,
   function renderResults() {
     if (isPending) {
       return (
-        <View style={styles.list}>
+        <View style={styles.list} {...loadingProps}>
           {SKELETON_ROWS.map((row) => (
             <PokemonRowSkeleton key={row} />
           ))}

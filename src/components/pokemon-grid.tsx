@@ -4,7 +4,9 @@ import { FlatList, StyleSheet, View } from 'react-native';
 import { openCompare, openPokemon } from '@/components/open-pokemon';
 import { showPokemonActions } from '@/components/pokemon-actions';
 import { PokemonCard, PokemonCardSkeleton } from '@/components/pokemon-card';
+import { loadingProps } from '@/components/skeleton';
 import { spacing } from '@/constants/theme';
+import { useLargeText } from '@/hooks/use-large-text';
 import type { PokemonSummary } from '@/services/pokemon';
 
 type Props = {
@@ -17,7 +19,7 @@ type Props = {
   onEndReached?: () => void;
 };
 
-// Two columns of cards. A tap opens the detail, ⋮ opens the card menu (open, favourite, compare, share).
+// Two columns of cards (one with a large system text size). A tap opens the detail, ⋮ opens the card menu (open, favourite, compare, share).
 export function PokemonGrid({
   pokemon,
   isFavorite,
@@ -27,12 +29,15 @@ export function PokemonGrid({
   ListEmptyComponent,
   onEndReached,
 }: Props) {
+  const columns = useLargeText() ? 1 : 2;
   return (
     <FlatList
+      // FlatList cannot change numColumns on the fly: a new key remounts it.
+      key={columns}
       data={pokemon}
       keyExtractor={(item) => String(item.id)}
-      numColumns={2}
-      columnWrapperStyle={styles.row}
+      numColumns={columns}
+      columnWrapperStyle={columns > 1 ? styles.row : undefined}
       contentContainerStyle={[styles.list, pokemon.length === 0 && styles.empty]}
       renderItem={({ item }) => (
         <PokemonCard
@@ -93,16 +98,21 @@ type SkeletonProps = {
 // The grid while it loads: placeholder cards in the same two columns. Plain views, not a list, so it can sit
 // inside a list footer.
 export function PokemonGridSkeleton({ ListHeaderComponent, count = SKELETON_CARDS, inset = true }: SkeletonProps) {
-  const rows = Array.from({ length: Math.ceil(count / 2) }, (_, index) => index);
+  const columnCount = useLargeText() ? 1 : 2;
+  const columns = Array.from({ length: columnCount }, (_, index) => index);
+  const rows = Array.from({ length: Math.ceil(count / columnCount) }, (_, index) => index);
   return (
     <View style={[styles.skeleton, inset && styles.list]}>
       {ListHeaderComponent}
-      {rows.map((row) => (
-        <View key={row} style={[styles.row, styles.skeletonRow]}>
-          <PokemonCardSkeleton />
-          <PokemonCardSkeleton />
-        </View>
-      ))}
+      <View style={styles.skeleton} {...loadingProps}>
+        {rows.map((row) => (
+          <View key={row} style={[styles.row, styles.skeletonRow]}>
+            {columns.map((column) => (
+              <PokemonCardSkeleton key={column} />
+            ))}
+          </View>
+        ))}
+      </View>
     </View>
   );
 }

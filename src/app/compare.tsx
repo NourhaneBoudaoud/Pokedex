@@ -8,7 +8,8 @@ import { ComparePicker } from '@/components/compare-picker';
 import { CompareSlot } from '@/components/compare-slot';
 import { CompareStats, CompareStatsSkeleton } from '@/components/compare-stats';
 import { ErrorState } from '@/components/error-state';
-import { colors, fontFamily, fontSize, radius, shadow, spacing } from '@/constants/theme';
+import { colors, fontFamily, fontSize, maxFontScale, radius, shadow, spacing } from '@/constants/theme';
+import { useLargeText } from '@/hooks/use-large-text';
 import { usePokemonDetail } from '@/hooks/use-pokemon-detail';
 import { usePokemonSearch } from '@/hooks/use-pokemon-search';
 import { compareStats } from '@/services/compare';
@@ -34,6 +35,7 @@ export default function CompareScreen() {
   const left = usePokemonDetail(leftId ?? 0);
   const right = usePokemonDetail(rightId ?? 0);
   const search = usePokemonSearch(text);
+  const largeText = useLargeText();
 
   function pick(pokemon: PokemonSummary) {
     if (picking === 'left') {
@@ -104,9 +106,13 @@ export default function CompareScreen() {
         <BackButton label="Back" />
       </View>
       <ScrollView contentContainerStyle={styles.content}>
-        <Text style={styles.title}>Compare</Text>
-        <View style={styles.slots}>
+        <Text style={styles.title} accessibilityRole="header" maxFontSizeMultiplier={maxFontScale.title}>
+          Compare
+        </Text>
+        {/* One under the other with a large text size, so each name has the full width. */}
+        <View style={[styles.slots, largeText && styles.slotsStacked]}>
           <CompareSlot
+            position="first"
             pokemon={slotPokemon(leftId, left.data?.name)}
             isPending={left.isPending}
             isError={left.isError}
@@ -114,6 +120,7 @@ export default function CompareScreen() {
             onRetry={() => left.refetch()}
           />
           <CompareSlot
+            position="second"
             pokemon={slotPokemon(rightId, right.data?.name)}
             isPending={right.isPending}
             isError={right.isError}
@@ -133,7 +140,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
   },
   bar: {
-    height: BAR_HEIGHT,
+    minHeight: BAR_HEIGHT,
     justifyContent: 'center',
     paddingHorizontal: spacing.md,
   },
@@ -150,6 +157,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-start',
     gap: spacing.md,
+  },
+  slotsStacked: {
+    flexDirection: 'column',
+    alignItems: 'stretch',
   },
   stats: {
     backgroundColor: colors.surface,

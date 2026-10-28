@@ -21,9 +21,10 @@ import { openPokemon } from '@/components/open-pokemon';
 import { RemoteImage } from '@/components/remote-image';
 import { StatsTab } from '@/components/stats-tab';
 import { TypePill } from '@/components/type-pill';
-import { colors, fontFamily, fontSize, spacing } from '@/constants/theme';
+import { colors, fontFamily, fontSize, maxFontScale, spacing } from '@/constants/theme';
 import { useEvolutionChain } from '@/hooks/use-evolution-chain';
 import { useFavorites, useToggleFavorite } from '@/hooks/use-favorites';
+import { useLargeText } from '@/hooks/use-large-text';
 import { usePokemonDetail } from '@/hooks/use-pokemon-detail';
 import { formatName, formatNumber } from '@/services/pokemon';
 
@@ -42,6 +43,7 @@ export default function PokemonDetailScreen() {
   const { isFavorite } = useFavorites();
   const toggleFavorite = useToggleFavorite();
   const favorite = isFavorite(id);
+  const largeText = useLargeText();
 
   const [tab, setTab] = useState<DetailTab>('About');
   // Stays true once the Evolution tab has been opened, so the chain is fetched once and kept.
@@ -80,11 +82,18 @@ export default function PokemonDetailScreen() {
         contentContainerStyle={styles.scrollContent}
       >
         <View style={styles.header}>
-          <View style={styles.titleRow}>
-            <Text style={styles.name} numberOfLines={1}>
+          <View
+            style={styles.titleRow}
+            accessible
+            accessibilityRole="header"
+            accessibilityLabel={`${name}, number ${formatNumber(pokemon.id)}`}
+          >
+            <Text style={styles.name} numberOfLines={2} maxFontSizeMultiplier={maxFontScale.title}>
               {name}
             </Text>
-            <Text style={styles.number}>#{formatNumber(pokemon.id)}</Text>
+            <Text style={styles.number} maxFontSizeMultiplier={maxFontScale.title}>
+              #{formatNumber(pokemon.id)}
+            </Text>
           </View>
           <View style={styles.types}>
             {pokemon.types.map((type) => (
@@ -124,10 +133,15 @@ export default function PokemonDetailScreen() {
     <SafeAreaView style={styles.container} edges={['top']}>
       <View style={styles.bar}>
         <BackButton label="Back" />
-        <Animated.Text style={[styles.compactName, compactNameStyle]} numberOfLines={1}>
-          {pokemon ? formatName(pokemon.name) : ''}
-        </Animated.Text>
+        {/* Hidden from screen readers: it repeats the title. Left out with a large text size: it would cover the
+            back button and the heart. */}
+        {!largeText && (
+          <Animated.Text style={[styles.compactName, compactNameStyle]} numberOfLines={1} aria-hidden>
+            {pokemon ? formatName(pokemon.name) : ''}
+          </Animated.Text>
+        )}
         <FavoriteButton
+          name={pokemon ? formatName(pokemon.name) : ''}
           favorite={favorite}
           disabled={!pokemon}
           onPress={() => pokemon && toggleFavorite.mutate({ pokemon, favorite })}
@@ -144,7 +158,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
   },
   bar: {
-    height: BAR_HEIGHT,
+    minHeight: BAR_HEIGHT,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',

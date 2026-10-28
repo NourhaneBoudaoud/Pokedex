@@ -4,6 +4,7 @@ import { NumberBadge } from '@/components/number-badge';
 import { RemoteImage } from '@/components/remote-image';
 import { Skeleton } from '@/components/skeleton';
 import { colors, fontFamily, fontSize, radius, shadow, spacing } from '@/constants/theme';
+import { useLargeText } from '@/hooks/use-large-text';
 import { formatName, getSpriteUrl, type PokemonSummary } from '@/services/pokemon';
 
 type Props = {
@@ -16,6 +17,7 @@ type Props = {
 // A horizontal card: sprite on the left, badge and name on the right. Evolution tab and compare picker.
 export function PokemonRow({ pokemon, onPress, actionLabel }: Props) {
   const name = formatName(pokemon.name);
+  const largeText = useLargeText();
   return (
     <Pressable
       style={({ pressed }) => [styles.card, pressed && styles.pressed]}
@@ -28,7 +30,7 @@ export function PokemonRow({ pokemon, onPress, actionLabel }: Props) {
       </View>
       <View style={styles.info}>
         <NumberBadge id={pokemon.id} />
-        <Text style={styles.name} numberOfLines={1}>
+        <Text style={styles.name} numberOfLines={largeText ? undefined : 1}>
           {name}
         </Text>
       </View>
@@ -42,7 +44,7 @@ const BADGE_HEIGHT = 18;
 export function PokemonRowSkeleton() {
   return (
     <View style={styles.card}>
-      <View style={styles.imageArea} />
+      <View style={styles.imageArea} aria-hidden />
       <View style={styles.info}>
         <Skeleton width={BADGE_WIDTH} height={BADGE_HEIGHT} />
         <Skeleton width="50%" height={fontSize.md} />
@@ -55,7 +57,7 @@ export const ROW_HEIGHT = 80;
 
 const styles = StyleSheet.create({
   card: {
-    height: ROW_HEIGHT,
+    minHeight: ROW_HEIGHT,
     flexDirection: 'row',
     backgroundColor: colors.surface,
     borderRadius: radius.md,
@@ -80,6 +82,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: spacing.xs,
     paddingHorizontal: spacing.ms,
+    paddingVertical: spacing.sm,
   },
   name: {
     fontFamily: fontFamily.medium,

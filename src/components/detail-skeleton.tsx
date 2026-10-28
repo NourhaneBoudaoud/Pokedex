@@ -1,6 +1,6 @@
 import { StyleSheet, View } from 'react-native';
 
-import { Skeleton } from '@/components/skeleton';
+import { loadingProps, Skeleton } from '@/components/skeleton';
 import { colors, fontSize, radius, spacing } from '@/constants/theme';
 
 const ARTWORK_SIZE = 160;
@@ -15,7 +15,7 @@ const ROWS = [0, 1, 2, 3, 4, 5, 6];
 // The detail screen while the Pokémon loads: header, artwork, tabs and About rows in their real places.
 export function DetailSkeleton() {
   return (
-    <View style={styles.container}>
+    <View style={styles.container} {...loadingProps}>
       <View style={styles.header}>
         <View style={styles.titleRow}>
           <Skeleton width={NAME_WIDTH} height={fontSize.name} />

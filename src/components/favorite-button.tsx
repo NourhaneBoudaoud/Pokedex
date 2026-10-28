@@ -12,6 +12,8 @@ import Animated, {
 import { colors, iconSize, spacing } from '@/constants/theme';
 
 type Props = {
+  // Display name, for the screen reader label. Empty while the Pokémon loads.
+  name: string;
   favorite: boolean;
   disabled?: boolean;
   onPress: () => void;
@@ -22,8 +24,13 @@ const POP_SCALE = 1.6;
 const POP_UP_MS = 100;
 const POP_SPRING = { damping: 10, stiffness: 400 } as const;
 
+function favoriteLabel(name: string, favorite: boolean) {
+  const pokemon = name || 'this Pokémon';
+  return favorite ? `Remove ${pokemon} from favorites` : `Add ${pokemon} to favorites`;
+}
+
 // The heart of the detail bar. Adding a favourite makes it pop, so the user sees the tap worked.
-export function FavoriteButton({ favorite, disabled, onPress }: Props) {
+export function FavoriteButton({ name, favorite, disabled, onPress }: Props) {
   const reduceMotion = useReducedMotion();
   const scale = useSharedValue(1);
   const popStyle = useAnimatedStyle(() => ({ transform: [{ scale: scale.get() }] }));
@@ -42,8 +49,8 @@ export function FavoriteButton({ favorite, disabled, onPress }: Props) {
       disabled={disabled}
       hitSlop={spacing.sm}
       accessibilityRole="button"
-      accessibilityLabel={favorite ? 'Remove from favorites' : 'Add to favorites'}
-      accessibilityState={{ selected: favorite }}
+      accessibilityLabel={favoriteLabel(name, favorite)}
+      accessibilityState={{ selected: favorite, disabled }}
     >
       <Animated.View style={popStyle}>
         <MaterialIcons
