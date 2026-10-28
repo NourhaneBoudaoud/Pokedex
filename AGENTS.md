@@ -27,8 +27,11 @@ add a line here: what it is and where it lives.
 - Pokémon helpers: `src/services/pokemon.ts` (`PokemonSummary`, `getIdFromUrl`, `getSpriteUrl`, `formatNumber`, `formatName`).
 - Query client: `src/services/query-client.ts`, provided in `src/app/_layout.tsx`.
 - Icons: `@expo/vector-icons/MaterialIcons` (same set as the Figma), sizes from `iconSize`.
-- UI: `PokemonCard` (`src/components/pokemon-card.tsx`) for every grid of Pokémon, `LoadingState` and `ErrorState`
-  (message + Retry, `compact` for the end of a list) for every load, `BackButton`, `SearchField`.
+- UI: `PokemonGrid` (`src/components/pokemon-grid.tsx`, 2 columns of `PokemonCard`, tap → detail, ⋮ → card menu) for every
+  grid of Pokémon, `LoadingState` and `ErrorState` (message + Retry, `compact` for the end of a list) for every load,
+  `BackButton`, `SearchField` (home, opens search) and `SearchInput` (real input with back arrow).
+- Search: `usePokemonSearch(text)` (`src/hooks/use-pokemon-search.ts`) loads every name once per session and filters with
+  `filterPokemon` (`src/services/search.ts`). Reuse it wherever a Pokémon is picked by name.
 - Card menu: `showPokemonActions(pokemon, handlers)` in `src/components/pokemon-actions.ts` (`ActionSheetIOS`, `Alert` on Android).
   New menu entries go there.
 

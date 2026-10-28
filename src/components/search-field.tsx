@@ -1,16 +1,17 @@
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { Pressable, StyleSheet, Text } from 'react-native';
+import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 
+import { BackButton } from '@/components/back-button';
 import { colors, fontFamily, fontSize, iconSize, radius, shadow, spacing } from '@/constants/theme';
 
 export const SEARCH_PLACEHOLDER = 'Search for Pokémon..';
 
-type Props = {
+type SearchFieldProps = {
   onPress: () => void;
 };
 
 // The field on the home screen. It only opens the search screen, where the real input lives.
-export function SearchField({ onPress }: Props) {
+export function SearchField({ onPress }: SearchFieldProps) {
   return (
     <Pressable
       style={styles.field}
@@ -21,6 +22,34 @@ export function SearchField({ onPress }: Props) {
       <MaterialIcons name="search" size={iconSize.md} color={colors.text} />
       <Text style={styles.placeholder}>{SEARCH_PLACEHOLDER}</Text>
     </Pressable>
+  );
+}
+
+type SearchInputProps = {
+  value: string;
+  onChangeText: (text: string) => void;
+};
+
+// The field on the search screen: same look, a back arrow instead of the search icon, focused on open.
+export function SearchInput({ value, onChangeText }: SearchInputProps) {
+  return (
+    <View style={styles.field}>
+      <BackButton />
+      <TextInput
+        style={styles.input}
+        value={value}
+        onChangeText={onChangeText}
+        placeholder={SEARCH_PLACEHOLDER}
+        placeholderTextColor={colors.textFaint}
+        selectionColor={colors.primary}
+        autoFocus
+        autoCorrect={false}
+        autoCapitalize="none"
+        returnKeyType="search"
+        clearButtonMode="while-editing"
+        accessibilityLabel="Search for Pokémon"
+      />
+    </View>
   );
 }
 
@@ -41,5 +70,12 @@ const styles = StyleSheet.create({
     fontFamily: fontFamily.regular,
     fontSize: fontSize.md,
     color: colors.textFaint,
+  },
+  input: {
+    flex: 1,
+    height: FIELD_HEIGHT,
+    fontFamily: fontFamily.regular,
+    fontSize: fontSize.md,
+    color: colors.text,
   },
 });

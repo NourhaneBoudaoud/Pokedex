@@ -1,19 +1,13 @@
 import { router } from 'expo-router';
-import { ActivityIndicator, FlatList, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ErrorState } from '@/components/error-state';
 import { LoadingState } from '@/components/loading-state';
-import { showPokemonActions } from '@/components/pokemon-actions';
-import { PokemonCard } from '@/components/pokemon-card';
+import { PokemonGrid } from '@/components/pokemon-grid';
 import { SearchField } from '@/components/search-field';
 import { colors, fontFamily, fontSize, spacing } from '@/constants/theme';
 import { usePokemonList } from '@/hooks/use-pokemon-list';
-import type { PokemonSummary } from '@/services/pokemon';
-
-function openPokemon(pokemon: PokemonSummary) {
-  router.push({ pathname: '/pokemon/[id]', params: { id: String(pokemon.id), name: pokemon.name } });
-}
 
 export default function HomeScreen() {
   const {
@@ -35,26 +29,14 @@ export default function HomeScreen() {
       return <ErrorState message="Could not load the Pokémon." onRetry={() => refetch()} />;
     }
     return (
-      <FlatList
-        data={pokemon}
-        keyExtractor={(item) => String(item.id)}
-        numColumns={2}
-        columnWrapperStyle={styles.row}
-        contentContainerStyle={styles.list}
+      <PokemonGrid
+        pokemon={pokemon}
         ListHeaderComponent={<Text style={styles.title}>All Pokémon</Text>}
-        renderItem={({ item }) => (
-          <PokemonCard
-            pokemon={item}
-            onPress={() => openPokemon(item)}
-            onMenuPress={() => showPokemonActions(item, { onOpen: () => openPokemon(item) })}
-          />
-        )}
         onEndReached={() => {
           if (hasNextPage && !isFetchingNextPage && !isFetchNextPageError) {
             fetchNextPage();
           }
         }}
-        onEndReachedThreshold={0.5}
         ListFooterComponent={
           isFetchNextPageError ? (
             <ErrorState compact message="Could not load more." onRetry={() => fetchNextPage()} />
@@ -84,14 +66,6 @@ const styles = StyleSheet.create({
   search: {
     paddingHorizontal: spacing.md,
     paddingTop: spacing.md,
-  },
-  list: {
-    paddingHorizontal: spacing.lg,
-    paddingBottom: spacing.lg,
-    gap: spacing.md,
-  },
-  row: {
-    gap: spacing.md,
   },
   title: {
     fontFamily: fontFamily.title,

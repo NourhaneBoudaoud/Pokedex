@@ -19,10 +19,22 @@ export type PokemonPage = {
   nextOffset: number | null;
 };
 
+// More than the number of Pokémon, so one request returns every name.
+const ALL_LIMIT = 100000;
+
+function toSummary(result: NamedResource): PokemonSummary {
+  return { id: getIdFromUrl(result.url), name: result.name };
+}
+
 export async function getPokemonPage(offset: number): Promise<PokemonPage> {
   const data = await apiGet<PokemonListResponse>(`/pokemon?limit=${PAGE_SIZE}&offset=${offset}`);
   return {
-    items: data.results.map((result) => ({ id: getIdFromUrl(result.url), name: result.name })),
+    items: data.results.map(toSummary),
     nextOffset: data.next ? offset + PAGE_SIZE : null,
   };
+}
+
+export async function getAllPokemon(): Promise<PokemonSummary[]> {
+  const data = await apiGet<PokemonListResponse>(`/pokemon?limit=${ALL_LIMIT}`);
+  return data.results.map(toSummary);
 }
