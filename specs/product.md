@@ -59,7 +59,7 @@ Look up a Pokémon.
 - [x] Tests: one file per feature on the logic, `npm test` passes (#8)
 - [x] CI: lint, tsc and tests on every push (#9)
 - [x] Accessibility: every button has a role and a label for VoiceOver and TalkBack, selected tab and favourite state announced, decorative elements hidden, screens still work with the largest text size (#13)
-- [x] Offline: works in airplane mode with the data already loaded (#14). The TanStack Query cache is saved in
+- [x] Offline: works in airplane mode with the data already loaded (#14, checked on the phone). The TanStack Query cache is saved in
   `expo-sqlite/kv-store` and restored at start (list pages, names for search, details, evolution chains seen in the
   last 7 days): it is already installed, runs in Expo Go, has the AsyncStorage API the persister expects and keeps
   everything in the same SQLite as favourites, so no new storage. Images come from the expo-image disk cache. The
