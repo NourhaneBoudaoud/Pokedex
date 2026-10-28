@@ -1,14 +1,14 @@
 # Pokédex
 
 A Pokédex app that follows the course Figma design, on the public PokeAPI (`https://pokeapi.co/api/v2`, no key).
-Product: `specs/product.md`. Design tokens and layout: `specs/design.md`, screen exports in `docs/design/`.
+Product: `specs/product.md`. Design tokens and layout: `specs/design.md`, screen exports in `docs/design/` (PNG to look at, SVG for exact values).
 Features: one file per feature in `specs/features/`, one GitHub issue each.
 
 - Expo SDK 58, Expo Router, TanStack Query, expo-sqlite, expo-haptics. Must run in Expo Go: no library that needs a development build.
 - Screens in `src/app/`, data through hooks in `src/hooks/`, API and SQL in `src/services/`, reusable UI in `src/components/`.
   A screen shows, a hook fetches, a service talks to the API or the database: none of them does two of these jobs.
 - Colours (including type colours), spacing and font names only from `src/constants/theme.ts`. No hex value or magic number in a screen or component.
-- Font: Rubik from `assets/fonts/`, loaded with Expo Font.
+- Fonts: Cabinet Grotesk for big titles, Rubik for the rest (see `specs/design.md`), files in `assets/fonts/`, loaded with Expo Font.
 - TypeScript strict. No `any`, no `as` casts (`as const` is fine), no `@ts-ignore`, no `console.log`. ESLint enforces these.
 - Tested on an iPhone in Expo Go: follow the iOS variants of the design (`ActionSheetIOS`, safe area), keep it working on Android.
   Do not upgrade the Expo SDK: Expo Go from the App Store only runs the latest one.

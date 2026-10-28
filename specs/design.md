@@ -1,28 +1,37 @@
 # Design reference
 
 Taken from the course Figma file ([Pokémon Code Challenge](https://www.figma.com/design/dsgGXcu5WELIvRW90m5308/Pok%C3%A9mon-Code-Challenge?node-id=1-2)).
-Screen exports are in [`docs/design/`](../docs/design/). Colours were sampled from those exports.
+Exports in [`docs/design/`](../docs/design/): PNG to look at, SVG for exact values. Colours, sizes, radii and
+shadows below are read from the SVG exports; font sizes and weights were fitted against the outlined text
+(width and height within 2 %). Frame: 390 × 844.
+
 Every value below lives in `src/constants/theme.ts`; screens never hardcode a colour or a spacing.
+
+The app is tested on an iPhone in Expo Go, so where the design has an iOS and an Android variant, follow the iOS one
+(`Options-1.png` action sheet with a separate Cancel, `Detail-1.png` back chevron, safe area around the notch).
+It must still work on Android.
 
 ## Colours
 
-| Token | Hex | Used for |
+The design has one text colour, `#0E0940`, used at different opacities.
+
+| Token | Value | Used for |
 |---|---|---|
-| `background` | `#EDF6FF` | Screen background, detail header, bottom tab bar |
-| `surface` | `#FFFFFF` | Card footer, search field, detail body |
-| `imageBackground` | `#F6F6FF` | Behind the sprite on a card and on an evolution card |
-| `primary` | `#5631E8` | Number badge, active tab, tab underline, stat bars |
+| `background` | `#EDF6FF` | Screen background, detail header |
+| `surface` | `#FFFFFF` | Cards, search field, detail body |
+| `imageBackground` | `#F7F7FF` | Behind the sprite on a card and on an evolution card |
+| `primary` | `#5631E8` | Number badge, active tab and its underline, stat bars, active bottom tab |
 | `onPrimary` | `#FFFFFF` | Text on `primary` |
 | `text` | `#0E0940` | Titles, names, labels |
-| `textSecondary` | `#625F83` | Values in About |
-| `textMuted` | `#86849F` | Inactive detail tab |
-| `tabInactive` | `#67688C` | Inactive bottom tab |
-| `number` | `#AAAFC6` | Number in the detail header |
-| `placeholder` | `#B3B3B3` | Search placeholder |
-| `chip` | `#DBE3F0` | Type pill background |
+| `textSecondary` | `#0E0940` at 65 % | Values in About and Stats |
+| `textMuted` | `#0E0940` at 50 % | Inactive detail tab |
+| `textFaint` | `#0E0940` at 30 % | Number in the detail header, search placeholder |
+| `chip` | `#0E0940` at 8 % | Type pill background |
 | `divider` | `#DBDAE6` | Line under the detail tabs |
 | `track` | `#F3F3F7` | Stat bar background |
 | `favorite` | `#FF4F68` | Filled heart |
+| `tabBar` | `#EDF6FF` at 50 % | Bottom tab bar (over the list) |
+| `shadow` | `#303773` at 15 %, offset y 2, blur 15 | Cards and search field |
 
 ## Type colours
 
@@ -40,30 +49,48 @@ Shown as the dot in a type pill. The design shows four; the rest follow the same
 | dragon | `#0A6DC4` | | dark | `#5A5366` |
 | steel | `#5A8EA1` | | fairy | `#EC8FE6` |
 
-## Font
+## Fonts
 
-Rubik, from the course [`fonts.zip`](https://github.com/Kevinvandenhoek/inholland-react-native-course/tree/main/exam/assets), loaded with Expo Font.
+Two families:
 
-| Use | Weight | Size |
+- **Cabinet Grotesk** (free, [Fontshare](https://www.fontshare.com/fonts/cabinet-grotesk)) for the big titles.
+- **Rubik**, from the course [`fonts.zip`](https://github.com/Kevinvandenhoek/inholland-react-native-course/tree/main/exam/assets), for everything else.
+
+Both loaded with Expo Font.
+
+| Use | Font | Size |
 |---|---|---|
-| Detail name | Bold | 30 |
-| Screen title ("All Pokémon", "My favorites") | SemiBold | 22 |
-| Card name, tab labels | Medium | 16 / 14 |
-| About labels, stat names | Medium | 14 |
-| Values | Regular | 14 |
-| Number badge | Medium | 11 |
+| Screen title ("All Pokémon", "My favorites") | Cabinet Grotesk ExtraBold | 24 |
+| Detail name ("Bulbasaur") | Cabinet Grotesk ExtraBold | 32 |
+| Detail number ("#001"), `textFaint` | Cabinet Grotesk (weight to check) | 24 |
+| Card name, evolution name, type pill | Rubik Medium | 16 |
+| Detail tabs, About labels, stat names | Rubik Medium | 14 |
+| About values, stat values | Rubik Regular | 14 |
+| Number badge ("001") | Rubik Regular | 10 |
+| Bottom tab label | Rubik Regular | 10 |
 
 ## Layout
 
-The app is tested on an iPhone in Expo Go, so where the design has an iOS and an Android variant, follow the iOS one
-(`Options-1.png` action sheet with a separate Cancel, `Detail-1.png` back chevron, safe area around the notch).
-It must still work on Android.
+Spacing scale: 4, 8, 16, 24. Side margin 24.
 
-
-- Side margin 24, gap between cards 16, card radius 8 with a soft shadow.
-- List: two columns. Card = number badge top left ("001"), sprite on `imageBackground`, white footer with name and a ⋮ button.
-- ⋮ opens an action sheet: Open Pokémon, Add to favorites, Share.
-- Bottom tabs: Pokémons and Favorites. Active tab: icon in a `primary` pill.
-- Search: the search icon becomes a back arrow, bottom tabs hidden, same cards.
-- Detail: back + heart, name and number ("#001"), type pills, large official artwork overlapping the `background` header. Tabs About / Stats / Evolution, underlined.
-  When scrolled, a compact header shows the name centred.
+- **Search field**: x 16, y 60, 358 × 48, radius 8, white, shadow. Icon at 24 from the left, text at 52.
+- **Title** "All Pokémon": baseline about 36 below the search field, left 24.
+- **Card**: 163 × 211, radius 8, white, shadow. Image area 163 × 163 on `imageBackground`. Two columns at x 24 and 203
+  (gap 16), rows 227 apart (gap 16). Badge at 8, 8: height 18, radius 4, padding 4 horizontal. Name at 12 from the left,
+  ⋮ at 12 from the right, both centred in the 48 high footer.
+- **Bottom tabs**: 84 high including the home indicator, Pokémons and Favorites, icon 20 above a 10 label.
+  Active: `primary` icon and label.
+- **Action sheet** (⋮): iOS `ActionSheetIOS` with Open Pokémon, Add to favorites, Share, and Cancel.
+- **Search screen**: the search icon becomes a back arrow, bottom tabs hidden, same cards starting at y 140.
+- **Detail header** (`background`, down to y 372): back and heart at y 62, name at 24 left (top ~122), number right-aligned
+  at 24 from the right, type pills at y 166 (height 32, radius 16, dot 8 then label), artwork 200 × 200 centred at y 222,
+  overlapping the white body that starts at y 372.
+- **Detail tabs**: three equal tabs of 114 across 342, labels at y ~454, underline at y 476: 2 high, `primary` under the
+  active tab, `divider` under the others.
+- **About**: rows 34 apart from y ~506, label at x 24, value at x 140.
+- **Stats**: rows 53 apart from y ~506, name left, value right, bar below: 342 × 4, radius 2, `track` with a `primary` fill.
+  The design's bar lengths are drawn by eye (no fixed scale); use value / 150, capped at 100 %.
+- **Evolution**: cards 342 × 80, radius 8, white, shadow, 38 apart (dotted line between). Sprite area 80 × 80 on
+  `imageBackground`, badge and name at x 116.
+- **Detail scrolled**: compact header 100 high, `background` at 50 %, name centred; the tabs stick under it.
+- **Splash**: Pokémon logo, 216 × 79, centred, on `background`. Source: embedded image in `docs/design/Splashscreen.svg`.
