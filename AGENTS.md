@@ -51,6 +51,9 @@ add a line here: what it is and where it lives.
   the repo has none; add it only if the web version becomes a goal.
 - Card menu: `showPokemonActions(pokemon, handlers)` in `src/components/pokemon-actions.ts` (`ActionSheetIOS`, `Alert` on Android).
   New menu entries go there.
+- Tests: `npm test` (Jest, `jest-expo` preset, `"types": ["jest"]` in `tsconfig.json`). Logic only, one file per feature in
+  `src/services/__tests__/`. Mock `fetch` with `jest.spyOn(globalThis, 'fetch')` and a real `Response`, and the database
+  by mocking `@/services/database` in `jest.mock`: no `as` cast, never the real PokeAPI.
 
 ## Working on an issue
 
