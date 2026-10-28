@@ -53,7 +53,7 @@ Shown as the dot in a type pill. The design shows four; the rest follow the same
 
 Two families:
 
-- **Cabinet Grotesk** (free, [Fontshare](https://www.fontshare.com/fonts/cabinet-grotesk)) for the big titles.
+- **Cabinet Grotesk** (free, [Fontshare](https://www.fontshare.com/fonts/cabinet-grotesk), ITF Free Font License: embedding in an app is allowed) for the big titles.
 - **Rubik**, from the course [`fonts.zip`](https://github.com/Kevinvandenhoek/inholland-react-native-course/tree/main/exam/assets), for everything else.
 
 Both loaded with Expo Font.
@@ -62,7 +62,7 @@ Both loaded with Expo Font.
 |---|---|---|
 | Screen title ("All Pokémon", "My favorites") | Cabinet Grotesk ExtraBold | 24 |
 | Detail name ("Bulbasaur") | Cabinet Grotesk ExtraBold | 32 |
-| Detail number ("#001"), `textFaint` | Cabinet Grotesk (weight to check) | 24 |
+| Detail number ("#001"), `textFaint` | Cabinet Grotesk Regular | 24 |
 | Card name, evolution name, type pill | Rubik Medium | 16 |
 | Detail tabs, About labels, stat names | Rubik Medium | 14 |
 | About values, stat values | Rubik Regular | 14 |
