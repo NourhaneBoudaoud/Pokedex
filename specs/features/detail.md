@@ -18,7 +18,7 @@ Open a Pokémon and read everything about it: what it is, how strong it is and w
 - [ ] Header: back arrow, heart, name, number ("#001"), one pill per type with the type colour dot, artwork.
 - [ ] About: Name, ID, Base (XP), Weight (kg), Height (m), Types, Abilities.
 - [ ] Stats: HP, Attack, Defense, Special Attack, Special Defense, Speed, each with its value and a bar
-  (full bar = 255).
+  (value / 150, capped at a full bar, as in `specs/design.md`).
 - [ ] Evolution: the chain as cards (sprite, badge, name) linked by a dotted line; tapping one opens its detail.
   Branches (Eevee) are listed one after the other.
 - [ ] Scrolling down shows a compact header with the name centred.
