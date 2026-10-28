@@ -43,7 +43,7 @@ Look up a Pokémon.
 - [x] Runs in Expo Go (tested on an iPhone)
 - [x] Live data through TanStack Query (`src/hooks/`: list, search, detail, evolution chain)
 - [x] At least 2 screens with Expo Router (home, favorites, search, detail, compare)
-- [ ] Something in SQLite that survives a restart: favourites in `pokedex.db` (to confirm on the phone: add a favourite, close Expo Go, reopen)
+- [x] Something in SQLite that survives a restart: favourites in `pokedex.db` (checked on the phone: still there after closing Expo Go)
 - [x] Loading and error state on every load (placeholders while loading, error message + Retry)
 - [x] One native feature: haptics on favourite toggle (detail and card menu); Share in the card menu as well
 - [x] TypeScript and ESLint without errors (checked by CI on every push)
@@ -53,7 +53,7 @@ Look up a Pokémon.
 
 - [x] Pagination: the list loads 20 at a time while you scroll (#2)
 - [x] Clean TypeScript: no `any`, no `as` casts, no `@ts-ignore` (enforced by ESLint)
-- [ ] No warnings: no `console.log` (enforced by ESLint); to confirm on the phone: no yellow warning in Expo Go or in the terminal
+- [x] No warnings: no `console.log` (enforced by ESLint), no warning in Expo Go or in the terminal (checked on the phone)
 - [x] Three different Reanimated animations, each with a purpose: compact detail header fading in (#4), pulsing loading placeholders (#7), heart pop on favourite (#10)
 - [x] Optimistic update: the heart and the favourites list change at once and roll back if the write fails (#5)
 - [x] Tests: one file per feature on the logic, `npm test` passes (#8)
