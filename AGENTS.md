@@ -23,6 +23,14 @@ add a line here: what it is and where it lives.
   `radius`, `shadow` (cards and search field), `fontFamily`, `fontSize`.
 - Fonts: `src/hooks/use-app-fonts.ts`, called once in `src/app/_layout.tsx`, which holds the splash until they are loaded.
   Use `fontFamily.*` in styles, never a font name as a string.
+- API client: `src/services/api-client.ts`, `apiGet<T>(path)`. Every PokeAPI request goes through it; it throws `ApiError`.
+- Pokémon helpers: `src/services/pokemon.ts` (`PokemonSummary`, `getIdFromUrl`, `getSpriteUrl`, `formatNumber`, `formatName`).
+- Query client: `src/services/query-client.ts`, provided in `src/app/_layout.tsx`.
+- Icons: `@expo/vector-icons/MaterialIcons` (same set as the Figma), sizes from `iconSize`.
+- UI: `PokemonCard` (`src/components/pokemon-card.tsx`) for every grid of Pokémon, `LoadingState` and `ErrorState`
+  (message + Retry, `compact` for the end of a list) for every load, `BackButton`, `SearchField`.
+- Card menu: `showPokemonActions(pokemon, handlers)` in `src/components/pokemon-actions.ts` (`ActionSheetIOS`, `Alert` on Android).
+  New menu entries go there.
 
 ## Working on an issue
 
