@@ -7,13 +7,15 @@ import { colors, fontFamily, fontSize, iconSize, spacing } from '@/constants/the
 type Props = {
   // With a label: the iOS chevron and text from the detail design. Without: the plain arrow of the search field.
   label?: string;
+  // Defaults to going back one screen.
+  onPress?: () => void;
 };
 
-export function BackButton({ label }: Props) {
+export function BackButton({ label, onPress = () => router.back() }: Props) {
   return (
     <Pressable
       style={styles.button}
-      onPress={() => router.back()}
+      onPress={onPress}
       hitSlop={spacing.sm}
       accessibilityRole="button"
       accessibilityLabel="Back"

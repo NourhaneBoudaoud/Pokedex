@@ -1,12 +1,10 @@
 import { Fragment } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 import { ErrorState } from '@/components/error-state';
-import { NumberBadge } from '@/components/number-badge';
-import { RemoteImage } from '@/components/remote-image';
-import { Skeleton } from '@/components/skeleton';
-import { colors, fontFamily, fontSize, radius, shadow, spacing } from '@/constants/theme';
-import { formatName, getSpriteUrl, type PokemonSummary } from '@/services/pokemon';
+import { PokemonRow, PokemonRowSkeleton, ROW_HEIGHT } from '@/components/pokemon-row';
+import { colors, fontFamily, fontSize, spacing } from '@/constants/theme';
+import type { PokemonSummary } from '@/services/pokemon';
 
 type Props = {
   chain: PokemonSummary[] | undefined;
@@ -32,38 +30,14 @@ export function EvolutionTab({ chain, isPending, isError, onRetry, onOpen }: Pro
       {chain.map((pokemon, index) => (
         <Fragment key={pokemon.id}>
           {index > 0 && <DottedLine />}
-          <EvolutionCard pokemon={pokemon} onPress={() => onOpen(pokemon)} />
+          <PokemonRow pokemon={pokemon} onPress={() => onOpen(pokemon)} actionLabel="Open" />
         </Fragment>
       ))}
     </View>
   );
 }
 
-function EvolutionCard({ pokemon, onPress }: { pokemon: PokemonSummary; onPress: () => void }) {
-  const name = formatName(pokemon.name);
-  return (
-    <Pressable
-      style={({ pressed }) => [styles.card, pressed && styles.pressed]}
-      onPress={onPress}
-      accessibilityRole="button"
-      accessibilityLabel={`Open ${name}`}
-    >
-      <View style={styles.imageArea}>
-        <RemoteImage uri={getSpriteUrl(pokemon.id)} style={styles.sprite} />
-      </View>
-      <View style={styles.info}>
-        <NumberBadge id={pokemon.id} />
-        <Text style={styles.name} numberOfLines={1}>
-          {name}
-        </Text>
-      </View>
-    </Pressable>
-  );
-}
-
 const SKELETON_CARDS = [0, 1, 2];
-const BADGE_WIDTH = 30;
-const BADGE_HEIGHT = 18;
 
 function EvolutionSkeleton() {
   return (
@@ -71,13 +45,7 @@ function EvolutionSkeleton() {
       {SKELETON_CARDS.map((card) => (
         <Fragment key={card}>
           {card > 0 && <DottedLine />}
-          <View style={styles.card}>
-            <View style={styles.imageArea} />
-            <View style={styles.info}>
-              <Skeleton width={BADGE_WIDTH} height={BADGE_HEIGHT} />
-              <Skeleton width="50%" height={fontSize.md} />
-            </View>
-          </View>
+          <PokemonRowSkeleton />
         </Fragment>
       ))}
     </View>
@@ -96,7 +64,6 @@ function DottedLine() {
   );
 }
 
-const CARD_HEIGHT = 80;
 // Cards are 38 apart in the design.
 const LINE_HEIGHT = 38;
 const DOT_SIZE = 2;
@@ -107,42 +74,10 @@ const styles = StyleSheet.create({
     fontSize: fontSize.sm,
     color: colors.textSecondary,
   },
-  card: {
-    height: CARD_HEIGHT,
-    flexDirection: 'row',
-    backgroundColor: colors.surface,
-    borderRadius: radius.md,
-    ...shadow,
-  },
-  pressed: {
-    opacity: 0.8,
-  },
-  imageArea: {
-    width: CARD_HEIGHT,
-    height: CARD_HEIGHT,
-    backgroundColor: colors.imageBackground,
-    borderTopLeftRadius: radius.md,
-    borderBottomLeftRadius: radius.md,
-    overflow: 'hidden',
-  },
-  sprite: {
-    flex: 1,
-  },
-  info: {
-    flex: 1,
-    justifyContent: 'center',
-    gap: spacing.xs,
-    paddingHorizontal: spacing.ms,
-  },
-  name: {
-    fontFamily: fontFamily.medium,
-    fontSize: fontSize.md,
-    color: colors.text,
-  },
   // Centred under the sprite area.
   line: {
     height: LINE_HEIGHT,
-    width: CARD_HEIGHT,
+    width: ROW_HEIGHT,
     alignItems: 'center',
     justifyContent: 'center',
     gap: spacing.xs,

@@ -6,3 +6,8 @@ import type { PokemonSummary } from '@/services/pokemon';
 export function openPokemon(pokemon: PokemonSummary) {
   router.push({ pathname: '/pokemon/[id]', params: { id: String(pokemon.id) } });
 }
+
+// The card menu's "Compare": that Pokémon goes in the left slot.
+export function openCompare(pokemon: PokemonSummary) {
+  router.push({ pathname: '/compare', params: { left: String(pokemon.id) } });
+}

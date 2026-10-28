@@ -43,6 +43,12 @@ add a line here: what it is and where it lives.
   `migrate()` with a new `SCHEMA_VERSION`. SQL only in `src/services/`, values always bound with `?`.
 - Favourites: `getFavorites` / `addFavorite` / `removeFavorite` in `src/services/favorites.ts`; in screens use
   `useFavorites()` (list + `isFavorite(id)`) and `useToggleFavorite()` (optimistic update, light haptic on success).
+- Rows: `PokemonRow` / `PokemonRowSkeleton` (`src/components/pokemon-row.tsx`), the horizontal card of the evolution tab
+  and the compare picker.
+- Compare: `compareStats(left, right)` in `src/services/compare.ts` (pure), `openCompare(pokemon)` in
+  `src/components/open-pokemon.ts`.
+- Web: expo-sqlite needs extra Metro config (`.wasm`) to bundle on the web. The app targets Expo Go on the phone, so
+  the repo has none; add it only if the web version becomes a goal.
 - Card menu: `showPokemonActions(pokemon, handlers)` in `src/components/pokemon-actions.ts` (`ActionSheetIOS`, `Alert` on Android).
   New menu entries go there.
 

@@ -28,13 +28,15 @@ export function SearchField({ onPress }: SearchFieldProps) {
 type SearchInputProps = {
   value: string;
   onChangeText: (text: string) => void;
+  // Where the back arrow goes; defaults to the previous screen.
+  onBack?: () => void;
 };
 
 // The field on the search screen: same look, a back arrow instead of the search icon, focused on open.
-export function SearchInput({ value, onChangeText }: SearchInputProps) {
+export function SearchInput({ value, onChangeText, onBack }: SearchInputProps) {
   return (
     <View style={styles.field}>
-      <BackButton />
+      <BackButton onPress={onBack} />
       <TextInput
         style={styles.input}
         value={value}

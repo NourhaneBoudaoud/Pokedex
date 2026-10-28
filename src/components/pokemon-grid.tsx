@@ -1,7 +1,7 @@
 import type { ReactElement } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 
-import { openPokemon } from '@/components/open-pokemon';
+import { openCompare, openPokemon } from '@/components/open-pokemon';
 import { showPokemonActions } from '@/components/pokemon-actions';
 import { PokemonCard, PokemonCardSkeleton } from '@/components/pokemon-card';
 import { spacing } from '@/constants/theme';
@@ -17,7 +17,7 @@ type Props = {
   onEndReached?: () => void;
 };
 
-// Two columns of cards. A tap opens the detail, ⋮ opens the card menu (open, favourite, share).
+// Two columns of cards. A tap opens the detail, ⋮ opens the card menu (open, favourite, compare, share).
 export function PokemonGrid({
   pokemon,
   isFavorite,
@@ -43,6 +43,7 @@ export function PokemonGrid({
               onOpen: () => openPokemon(item),
               isFavorite: isFavorite(item.id),
               onToggleFavorite: () => onToggleFavorite(item),
+              onCompare: () => openCompare(item),
             })
           }
         />
