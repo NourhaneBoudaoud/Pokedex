@@ -26,6 +26,8 @@ export function RemoteImage({ uri, style, accessibilityLabel }: Props) {
         source={uri}
         style={StyleSheet.absoluteFill}
         contentFit="contain"
+        // Saved on disk, so images already seen still show offline.
+        cachePolicy="disk"
         transition={FADE_MS}
         recyclingKey={uri}
         onLoad={() => setLoadedUri(uri)}

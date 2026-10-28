@@ -11,7 +11,7 @@ import { usePokemonSearch } from '@/hooks/use-pokemon-search';
 
 export default function SearchScreen() {
   const [text, setText] = useState('');
-  const { results, isPending, isError, refetch } = usePokemonSearch(text);
+  const { results, data, isPending, isError, refetch } = usePokemonSearch(text);
   const { isFavorite } = useFavorites();
   const toggleFavorite = useToggleFavorite();
 
@@ -19,7 +19,7 @@ export default function SearchScreen() {
     if (isPending) {
       return <PokemonGridSkeleton ListHeaderComponent={<View style={styles.header} />} />;
     }
-    if (isError) {
+    if (isError && !data) {
       return <ErrorState message="Could not load the Pokémon names." onRetry={() => refetch()} />;
     }
     const message =
