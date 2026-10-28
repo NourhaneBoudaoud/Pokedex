@@ -19,7 +19,10 @@ Features: one file per feature in `specs/features/`, one GitHub issue each.
 Reuse what is listed here, never add a second one. When you set up something new that other features will use,
 add a line here: what it is and where it lives.
 
-- Theme: `src/constants/theme.ts` (not written yet).
+- Theme: `src/constants/theme.ts`. `colors`, `typeColors` + `getTypeColor(name)` (PokeAPI type name), `spacing`,
+  `radius`, `shadow` (cards and search field), `fontFamily`, `fontSize`.
+- Fonts: `src/hooks/use-app-fonts.ts`, called once in `src/app/_layout.tsx`, which holds the splash until they are loaded.
+  Use `fontFamily.*` in styles, never a font name as a string.
 
 ## Working on an issue
 
@@ -30,6 +33,8 @@ add a line here: what it is and where it lives.
 4. Tick off tasks with `gh issue comment --edit-last` while you build.
 5. Run `npx expo lint` and `npx tsc --noEmit` before you say a task is done. Both must pass.
 6. One commit per issue, message ending with `closes #N`.
+7. No AI attribution anywhere: no "Generated with Claude Code", no `Co-Authored-By` or session link in commits,
+   issues, comments, pull requests or files.
 
 This is an Expo/React Native mobile application. Prioritize mobile-first patterns, performance, and cross-platform compatibility.
 
