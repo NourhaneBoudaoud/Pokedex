@@ -1,7 +1,6 @@
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import Animated, {
   Extrapolation,
   interpolate,
@@ -17,11 +16,12 @@ import { DetailSkeleton } from '@/components/detail-skeleton';
 import { DetailTabs, type DetailTab } from '@/components/detail-tabs';
 import { ErrorState } from '@/components/error-state';
 import { EvolutionTab } from '@/components/evolution-tab';
+import { FavoriteButton } from '@/components/favorite-button';
 import { openPokemon } from '@/components/open-pokemon';
 import { RemoteImage } from '@/components/remote-image';
 import { StatsTab } from '@/components/stats-tab';
 import { TypePill } from '@/components/type-pill';
-import { colors, fontFamily, fontSize, iconSize, spacing } from '@/constants/theme';
+import { colors, fontFamily, fontSize, spacing } from '@/constants/theme';
 import { useEvolutionChain } from '@/hooks/use-evolution-chain';
 import { useFavorites, useToggleFavorite } from '@/hooks/use-favorites';
 import { usePokemonDetail } from '@/hooks/use-pokemon-detail';
@@ -127,20 +127,11 @@ export default function PokemonDetailScreen() {
         <Animated.Text style={[styles.compactName, compactNameStyle]} numberOfLines={1}>
           {pokemon ? formatName(pokemon.name) : ''}
         </Animated.Text>
-        <Pressable
-          onPress={() => pokemon && toggleFavorite.mutate({ pokemon, favorite })}
+        <FavoriteButton
+          favorite={favorite}
           disabled={!pokemon}
-          hitSlop={spacing.sm}
-          accessibilityRole="button"
-          accessibilityLabel={favorite ? 'Remove from favorites' : 'Add to favorites'}
-          accessibilityState={{ selected: favorite }}
-        >
-          <MaterialIcons
-            name={favorite ? 'favorite' : 'favorite-border'}
-            size={iconSize.md}
-            color={favorite ? colors.favorite : colors.text}
-          />
-        </Pressable>
+          onPress={() => pokemon && toggleFavorite.mutate({ pokemon, favorite })}
+        />
       </View>
       {renderBody()}
     </SafeAreaView>

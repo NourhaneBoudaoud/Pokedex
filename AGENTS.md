@@ -39,6 +39,8 @@ add a line here: what it is and where it lives.
   `useEvolutionChain(speciesId, enabled)`. Reuse them instead of fetching a Pokémon again (same cache).
 - Navigation: `openPokemon(pokemon)` (`src/components/open-pokemon.ts`) is the only way into a detail screen.
 - Detail UI: `NumberBadge`, `TypePill`, `DetailTabs`, `AboutTab`, `StatsTab`, `EvolutionTab`; stat bars use `statBarRatio`.
+- Favourite heart: `FavoriteButton` (`src/components/favorite-button.tsx`), pops with a spring when a favourite is added,
+  not when the system's Reduce Motion is on.
 - Database: `getDatabase()` in `src/services/database.ts`, the only connection (`pokedex.db`). Schema changes go in
   `migrate()` with a new `SCHEMA_VERSION`. SQL only in `src/services/`, values always bound with `?`.
 - Favourites: `getFavorites` / `addFavorite` / `removeFavorite` in `src/services/favorites.ts`; in screens use
