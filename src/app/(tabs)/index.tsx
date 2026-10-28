@@ -1,10 +1,9 @@
 import { router } from 'expo-router';
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ErrorState } from '@/components/error-state';
-import { LoadingState } from '@/components/loading-state';
-import { PokemonGrid } from '@/components/pokemon-grid';
+import { PokemonGrid, PokemonGridSkeleton } from '@/components/pokemon-grid';
 import { SearchField } from '@/components/search-field';
 import { colors, fontFamily, fontSize, spacing } from '@/constants/theme';
 import { usePokemonList } from '@/hooks/use-pokemon-list';
@@ -21,9 +20,11 @@ export default function HomeScreen() {
     isFetchNextPageError,
   } = usePokemonList();
 
+  const title = <Text style={styles.title}>All Pokémon</Text>;
+
   function renderContent() {
     if (isPending) {
-      return <LoadingState />;
+      return <PokemonGridSkeleton ListHeaderComponent={title} />;
     }
     if (isError && pokemon.length === 0) {
       return <ErrorState message="Could not load the Pokémon." onRetry={() => refetch()} />;
@@ -31,7 +32,7 @@ export default function HomeScreen() {
     return (
       <PokemonGrid
         pokemon={pokemon}
-        ListHeaderComponent={<Text style={styles.title}>All Pokémon</Text>}
+        ListHeaderComponent={title}
         onEndReached={() => {
           if (hasNextPage && !isFetchingNextPage && !isFetchNextPageError) {
             fetchNextPage();
@@ -41,7 +42,7 @@ export default function HomeScreen() {
           isFetchNextPageError ? (
             <ErrorState compact message="Could not load more." onRetry={() => fetchNextPage()} />
           ) : isFetchingNextPage ? (
-            <ActivityIndicator style={styles.footer} color={colors.primary} />
+            <PokemonGridSkeleton count={2} inset={false} />
           ) : undefined
         }
       />
@@ -72,8 +73,5 @@ const styles = StyleSheet.create({
     fontSize: fontSize.title,
     color: colors.text,
     marginTop: spacing.lg,
-  },
-  footer: {
-    paddingVertical: spacing.md,
   },
 });

@@ -15,6 +15,7 @@ export const colors = {
   track: '#F3F3F7',
   favorite: '#FF4F68',
   tabBar: 'rgba(237, 246, 255, 0.5)',
+  skeleton: 'rgba(14, 9, 64, 0.06)',
 } as const;
 
 export const typeColors = {

@@ -1,5 +1,4 @@
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { Image } from 'expo-image';
 import { useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
@@ -14,11 +13,12 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { AboutTab } from '@/components/about-tab';
 import { BackButton } from '@/components/back-button';
+import { DetailSkeleton } from '@/components/detail-skeleton';
 import { DetailTabs, type DetailTab } from '@/components/detail-tabs';
 import { ErrorState } from '@/components/error-state';
 import { EvolutionTab } from '@/components/evolution-tab';
-import { LoadingState } from '@/components/loading-state';
 import { openPokemon } from '@/components/open-pokemon';
+import { RemoteImage } from '@/components/remote-image';
 import { StatsTab } from '@/components/stats-tab';
 import { TypePill } from '@/components/type-pill';
 import { colors, fontFamily, fontSize, iconSize, spacing } from '@/constants/theme';
@@ -64,7 +64,7 @@ export default function PokemonDetailScreen() {
       return <ErrorState message="Could not load this Pokémon." onRetry={() => refetch()} />;
     }
     if (isPending) {
-      return <LoadingState />;
+      return <DetailSkeleton />;
     }
 
     const name = formatName(pokemon.name);
@@ -89,10 +89,9 @@ export default function PokemonDetailScreen() {
           </View>
           <View style={styles.artworkSpace}>
             {pokemon.artworkUrl && (
-              <Image
-                source={pokemon.artworkUrl}
+              <RemoteImage
+                uri={pokemon.artworkUrl}
                 style={styles.artwork}
-                contentFit="contain"
                 accessibilityLabel={`${name} artwork`}
               />
             )}

@@ -1,9 +1,9 @@
 import type { ReactElement } from 'react';
-import { FlatList, StyleSheet } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 
 import { openPokemon } from '@/components/open-pokemon';
 import { showPokemonActions } from '@/components/pokemon-actions';
-import { PokemonCard } from '@/components/pokemon-card';
+import { PokemonCard, PokemonCardSkeleton } from '@/components/pokemon-card';
 import { spacing } from '@/constants/theme';
 import type { PokemonSummary } from '@/services/pokemon';
 
@@ -61,4 +61,37 @@ const styles = StyleSheet.create({
   row: {
     gap: spacing.md,
   },
+  skeleton: {
+    gap: spacing.md,
+  },
+  skeletonRow: {
+    flexDirection: 'row',
+  },
 });
+
+const SKELETON_CARDS = 6;
+
+type SkeletonProps = {
+  ListHeaderComponent?: ReactElement;
+  // 6 fill the first screen; 2 make one row at the end of a list.
+  count?: number;
+  // False when the skeleton sits inside a grid that already has the side margins.
+  inset?: boolean;
+};
+
+// The grid while it loads: placeholder cards in the same two columns. Plain views, not a list, so it can sit
+// inside a list footer.
+export function PokemonGridSkeleton({ ListHeaderComponent, count = SKELETON_CARDS, inset = true }: SkeletonProps) {
+  const rows = Array.from({ length: Math.ceil(count / 2) }, (_, index) => index);
+  return (
+    <View style={[styles.skeleton, inset && styles.list]}>
+      {ListHeaderComponent}
+      {rows.map((row) => (
+        <View key={row} style={[styles.row, styles.skeletonRow]}>
+          <PokemonCardSkeleton />
+          <PokemonCardSkeleton />
+        </View>
+      ))}
+    </View>
+  );
+}

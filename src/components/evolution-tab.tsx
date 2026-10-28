@@ -1,10 +1,10 @@
-import { Image } from 'expo-image';
 import { Fragment } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { ErrorState } from '@/components/error-state';
-import { LoadingState } from '@/components/loading-state';
 import { NumberBadge } from '@/components/number-badge';
+import { RemoteImage } from '@/components/remote-image';
+import { Skeleton } from '@/components/skeleton';
 import { colors, fontFamily, fontSize, radius, shadow, spacing } from '@/constants/theme';
 import { formatName, getSpriteUrl, type PokemonSummary } from '@/services/pokemon';
 
@@ -21,7 +21,7 @@ export function EvolutionTab({ chain, isPending, isError, onRetry, onOpen }: Pro
     return <ErrorState message="Could not load the evolution chain." onRetry={onRetry} />;
   }
   if (isPending || !chain) {
-    return <LoadingState />;
+    return <EvolutionSkeleton />;
   }
   if (chain.length <= 1) {
     return <Text style={styles.none}>This Pokémon does not evolve.</Text>;
@@ -49,7 +49,7 @@ function EvolutionCard({ pokemon, onPress }: { pokemon: PokemonSummary; onPress:
       accessibilityLabel={`Open ${name}`}
     >
       <View style={styles.imageArea}>
-        <Image source={getSpriteUrl(pokemon.id)} style={styles.sprite} contentFit="contain" />
+        <RemoteImage uri={getSpriteUrl(pokemon.id)} style={styles.sprite} />
       </View>
       <View style={styles.info}>
         <NumberBadge id={pokemon.id} />
@@ -58,6 +58,29 @@ function EvolutionCard({ pokemon, onPress }: { pokemon: PokemonSummary; onPress:
         </Text>
       </View>
     </Pressable>
+  );
+}
+
+const SKELETON_CARDS = [0, 1, 2];
+const BADGE_WIDTH = 30;
+const BADGE_HEIGHT = 18;
+
+function EvolutionSkeleton() {
+  return (
+    <View>
+      {SKELETON_CARDS.map((card) => (
+        <Fragment key={card}>
+          {card > 0 && <DottedLine />}
+          <View style={styles.card}>
+            <View style={styles.imageArea} />
+            <View style={styles.info}>
+              <Skeleton width={BADGE_WIDTH} height={BADGE_HEIGHT} />
+              <Skeleton width="50%" height={fontSize.md} />
+            </View>
+          </View>
+        </Fragment>
+      ))}
+    </View>
   );
 }
 

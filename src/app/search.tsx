@@ -3,8 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ErrorState } from '@/components/error-state';
-import { LoadingState } from '@/components/loading-state';
-import { PokemonGrid } from '@/components/pokemon-grid';
+import { PokemonGrid, PokemonGridSkeleton } from '@/components/pokemon-grid';
 import { SearchInput } from '@/components/search-field';
 import { colors, fontFamily, fontSize, spacing } from '@/constants/theme';
 import { usePokemonSearch } from '@/hooks/use-pokemon-search';
@@ -15,7 +14,7 @@ export default function SearchScreen() {
 
   function renderContent() {
     if (isPending) {
-      return <LoadingState />;
+      return <PokemonGridSkeleton ListHeaderComponent={<View style={styles.header} />} />;
     }
     if (isError) {
       return <ErrorState message="Could not load the Pokémon names." onRetry={() => refetch()} />;

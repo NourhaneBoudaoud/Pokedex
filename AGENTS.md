@@ -28,10 +28,13 @@ add a line here: what it is and where it lives.
 - Query client: `src/services/query-client.ts`, provided in `src/app/_layout.tsx`.
 - Icons: `@expo/vector-icons/MaterialIcons` (same set as the Figma), sizes from `iconSize`.
 - UI: `PokemonGrid` (`src/components/pokemon-grid.tsx`, 2 columns of `PokemonCard`, tap → detail, ⋮ → card menu) for every
-  grid of Pokémon, `LoadingState` and `ErrorState` (message + Retry, `compact` for the end of a list) for every load,
+  grid of Pokémon, `ErrorState` (message + Retry, `compact` for the end of a list) for every failed load,
   `BackButton`, `SearchField` (home, opens search) and `SearchInput` (real input with back arrow).
 - Search: `usePokemonSearch(text)` (`src/hooks/use-pokemon-search.ts`) loads every name once per session and filters with
   `filterPokemon` (`src/services/search.ts`). Reuse it wherever a Pokémon is picked by name.
+- Loading: never a spinner on an empty screen. Every load shows placeholders in the shape of the content:
+  `Skeleton` (`src/components/skeleton.tsx`, pulsing block), `PokemonGridSkeleton`, `PokemonCardSkeleton`,
+  `DetailSkeleton`. Every Pokémon image goes through `RemoteImage` (placeholder until loaded, then a fade-in).
 - Detail data: `usePokemonDetail(id)` (`src/hooks/use-pokemon-detail.ts`, `PokemonDetail` with types and stats) and
   `useEvolutionChain(speciesId, enabled)`. Reuse them instead of fetching a Pokémon again (same cache).
 - Navigation: `openPokemon(pokemon)` (`src/components/open-pokemon.ts`) is the only way into a detail screen.

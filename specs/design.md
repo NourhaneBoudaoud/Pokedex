@@ -94,3 +94,13 @@ Spacing scale: 4, 8, 16, 24. Side margin 24.
   `imageBackground`, badge and name at x 116.
 - **Detail scrolled**: compact header 100 high, `background` at 50 %, name centred; the tabs stick under it.
 - **Splash**: Pokémon logo, 216 × 79, centred, on `background`. Source: embedded image in `docs/design/Splashscreen.svg`.
+
+## Loading placeholders
+
+While something loads, the screen shows grey blocks (`colors.skeleton`, `#0E0940` at 6 %) in the shape and size of
+what is coming, pulsing between 40 % and 100 % opacity (800 ms each way). Nothing jumps when the content arrives.
+
+- Lists: placeholder cards in the same grid (badge, name line); one row of two at the end of a list while the next page loads.
+- Images: a rounded block inset by 20 % inside the image area until the image has loaded, then a 200 ms fade-in.
+- Detail: name, number, two pills, a round artwork, the tabs and the About rows.
+- Evolution tab: three placeholder evolution cards joined by the dotted line.

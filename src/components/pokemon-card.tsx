@@ -1,8 +1,9 @@
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { Image } from 'expo-image';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { NumberBadge } from '@/components/number-badge';
+import { RemoteImage } from '@/components/remote-image';
+import { Skeleton } from '@/components/skeleton';
 import { colors, fontFamily, fontSize, iconSize, radius, shadow, spacing } from '@/constants/theme';
 import { formatName, getSpriteUrl, type PokemonSummary } from '@/services/pokemon';
 
@@ -23,12 +24,7 @@ export function PokemonCard({ pokemon, onPress, onMenuPress }: Props) {
       accessibilityLabel={`Open ${name}`}
     >
       <View style={styles.imageArea}>
-        <Image
-          source={getSpriteUrl(pokemon.id)}
-          style={styles.sprite}
-          contentFit="contain"
-          recyclingKey={String(pokemon.id)}
-        />
+        <RemoteImage uri={getSpriteUrl(pokemon.id)} style={styles.sprite} />
         <View style={styles.badge}>
           <NumberBadge id={pokemon.id} />
         </View>
@@ -50,7 +46,26 @@ export function PokemonCard({ pokemon, onPress, onMenuPress }: Props) {
   );
 }
 
+// Same size and layout as a card, shown while the list loads.
+export function PokemonCardSkeleton() {
+  return (
+    <View style={styles.card}>
+      <View style={styles.imageArea}>
+        <Skeleton style={styles.imagePlaceholder} radius={radius.md} />
+        <View style={styles.badge}>
+          <Skeleton width={BADGE_WIDTH} height={BADGE_HEIGHT} />
+        </View>
+      </View>
+      <View style={styles.footer}>
+        <Skeleton width="60%" height={fontSize.md} />
+      </View>
+    </View>
+  );
+}
+
 const FOOTER_HEIGHT = 48;
+const BADGE_WIDTH = 30;
+const BADGE_HEIGHT = 18;
 
 const styles = StyleSheet.create({
   card: {
@@ -71,6 +86,11 @@ const styles = StyleSheet.create({
   },
   sprite: {
     flex: 1,
+  },
+  // Same inset as the placeholder inside RemoteImage.
+  imagePlaceholder: {
+    ...StyleSheet.absoluteFill,
+    margin: '20%',
   },
   badge: {
     position: 'absolute',
