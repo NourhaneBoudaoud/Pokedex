@@ -1,7 +1,7 @@
-import { router } from 'expo-router';
 import type { ReactElement } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 
+import { openPokemon } from '@/components/open-pokemon';
 import { showPokemonActions } from '@/components/pokemon-actions';
 import { PokemonCard } from '@/components/pokemon-card';
 import { spacing } from '@/constants/theme';
@@ -14,10 +14,6 @@ type Props = {
   ListEmptyComponent?: ReactElement;
   onEndReached?: () => void;
 };
-
-function openPokemon(pokemon: PokemonSummary) {
-  router.push({ pathname: '/pokemon/[id]', params: { id: String(pokemon.id), name: pokemon.name } });
-}
 
 // Two columns of cards. A tap opens the detail, ⋮ opens the card menu.
 export function PokemonGrid({

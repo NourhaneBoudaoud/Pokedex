@@ -32,6 +32,10 @@ add a line here: what it is and where it lives.
   `BackButton`, `SearchField` (home, opens search) and `SearchInput` (real input with back arrow).
 - Search: `usePokemonSearch(text)` (`src/hooks/use-pokemon-search.ts`) loads every name once per session and filters with
   `filterPokemon` (`src/services/search.ts`). Reuse it wherever a Pokémon is picked by name.
+- Detail data: `usePokemonDetail(id)` (`src/hooks/use-pokemon-detail.ts`, `PokemonDetail` with types and stats) and
+  `useEvolutionChain(speciesId, enabled)`. Reuse them instead of fetching a Pokémon again (same cache).
+- Navigation: `openPokemon(pokemon)` (`src/components/open-pokemon.ts`) is the only way into a detail screen.
+- Detail UI: `NumberBadge`, `TypePill`, `DetailTabs`, `AboutTab`, `StatsTab`, `EvolutionTab`; stat bars use `statBarRatio`.
 - Card menu: `showPokemonActions(pokemon, handlers)` in `src/components/pokemon-actions.ts` (`ActionSheetIOS`, `Alert` on Android).
   New menu entries go there.
 

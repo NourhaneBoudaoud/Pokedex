@@ -64,6 +64,7 @@ export const iconSize = {
 } as const;
 
 export const radius = {
+  bar: 2,
   sm: 4,
   md: 8,
   pill: 16,

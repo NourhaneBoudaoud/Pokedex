@@ -1,18 +1,41 @@
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { router } from 'expo-router';
-import { Pressable } from 'react-native';
+import { Pressable, StyleSheet, Text } from 'react-native';
 
-import { colors, iconSize, spacing } from '@/constants/theme';
+import { colors, fontFamily, fontSize, iconSize, spacing } from '@/constants/theme';
 
-export function BackButton() {
+type Props = {
+  // With a label: the iOS chevron and text from the detail design. Without: the plain arrow of the search field.
+  label?: string;
+};
+
+export function BackButton({ label }: Props) {
   return (
     <Pressable
+      style={styles.button}
       onPress={() => router.back()}
       hitSlop={spacing.sm}
       accessibilityRole="button"
       accessibilityLabel="Back"
     >
-      <MaterialIcons name="arrow-back" size={iconSize.md} color={colors.text} />
+      <MaterialIcons
+        name={label ? 'arrow-back-ios' : 'arrow-back'}
+        size={label ? iconSize.sm : iconSize.md}
+        color={colors.text}
+      />
+      {label && <Text style={styles.label}>{label}</Text>}
     </Pressable>
   );
 }
+
+const styles = StyleSheet.create({
+  button: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  label: {
+    fontFamily: fontFamily.regular,
+    fontSize: fontSize.md,
+    color: colors.text,
+  },
+});

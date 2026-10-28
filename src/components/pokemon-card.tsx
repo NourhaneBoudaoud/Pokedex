@@ -2,8 +2,9 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Image } from 'expo-image';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
+import { NumberBadge } from '@/components/number-badge';
 import { colors, fontFamily, fontSize, iconSize, radius, shadow, spacing } from '@/constants/theme';
-import { formatName, formatNumber, getSpriteUrl, type PokemonSummary } from '@/services/pokemon';
+import { formatName, getSpriteUrl, type PokemonSummary } from '@/services/pokemon';
 
 type Props = {
   pokemon: PokemonSummary;
@@ -29,7 +30,7 @@ export function PokemonCard({ pokemon, onPress, onMenuPress }: Props) {
           recyclingKey={String(pokemon.id)}
         />
         <View style={styles.badge}>
-          <Text style={styles.badgeText}>{formatNumber(pokemon.id)}</Text>
+          <NumberBadge id={pokemon.id} />
         </View>
       </View>
       <View style={styles.footer}>
@@ -75,15 +76,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: spacing.sm,
     left: spacing.sm,
-    backgroundColor: colors.primary,
-    borderRadius: radius.sm,
-    paddingHorizontal: spacing.xs,
-    paddingVertical: spacing.xxs,
-  },
-  badgeText: {
-    fontFamily: fontFamily.regular,
-    fontSize: fontSize.xs,
-    color: colors.onPrimary,
   },
   footer: {
     height: FOOTER_HEIGHT,
