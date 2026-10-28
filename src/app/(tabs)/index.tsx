@@ -6,6 +6,7 @@ import { ErrorState } from '@/components/error-state';
 import { PokemonGrid, PokemonGridSkeleton } from '@/components/pokemon-grid';
 import { SearchField } from '@/components/search-field';
 import { colors, fontFamily, fontSize, spacing } from '@/constants/theme';
+import { useFavorites, useToggleFavorite } from '@/hooks/use-favorites';
 import { usePokemonList } from '@/hooks/use-pokemon-list';
 
 export default function HomeScreen() {
@@ -19,6 +20,8 @@ export default function HomeScreen() {
     isFetchingNextPage,
     isFetchNextPageError,
   } = usePokemonList();
+  const { isFavorite } = useFavorites();
+  const toggleFavorite = useToggleFavorite();
 
   const title = <Text style={styles.title}>All Pokémon</Text>;
 
@@ -31,6 +34,8 @@ export default function HomeScreen() {
     }
     return (
       <PokemonGrid
+        isFavorite={isFavorite}
+        onToggleFavorite={(item) => toggleFavorite.mutate({ pokemon: item, favorite: isFavorite(item.id) })}
         pokemon={pokemon}
         ListHeaderComponent={title}
         onEndReached={() => {

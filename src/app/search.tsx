@@ -6,11 +6,14 @@ import { ErrorState } from '@/components/error-state';
 import { PokemonGrid, PokemonGridSkeleton } from '@/components/pokemon-grid';
 import { SearchInput } from '@/components/search-field';
 import { colors, fontFamily, fontSize, spacing } from '@/constants/theme';
+import { useFavorites, useToggleFavorite } from '@/hooks/use-favorites';
 import { usePokemonSearch } from '@/hooks/use-pokemon-search';
 
 export default function SearchScreen() {
   const [text, setText] = useState('');
   const { results, isPending, isError, refetch } = usePokemonSearch(text);
+  const { isFavorite } = useFavorites();
+  const toggleFavorite = useToggleFavorite();
 
   function renderContent() {
     if (isPending) {
@@ -23,6 +26,8 @@ export default function SearchScreen() {
       text.trim() === '' ? 'Start typing to find a Pokémon' : `No Pokémon found for "${text.trim()}"`;
     return (
       <PokemonGrid
+        isFavorite={isFavorite}
+        onToggleFavorite={(item) => toggleFavorite.mutate({ pokemon: item, favorite: isFavorite(item.id) })}
         pokemon={results}
         ListHeaderComponent={<View style={styles.header} />}
         ListEmptyComponent={

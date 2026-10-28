@@ -1,7 +1,7 @@
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, {
   Extrapolation,
   interpolate,
@@ -23,6 +23,7 @@ import { StatsTab } from '@/components/stats-tab';
 import { TypePill } from '@/components/type-pill';
 import { colors, fontFamily, fontSize, iconSize, spacing } from '@/constants/theme';
 import { useEvolutionChain } from '@/hooks/use-evolution-chain';
+import { useFavorites, useToggleFavorite } from '@/hooks/use-favorites';
 import { usePokemonDetail } from '@/hooks/use-pokemon-detail';
 import { formatName, formatNumber } from '@/services/pokemon';
 
@@ -38,6 +39,9 @@ export default function PokemonDetailScreen() {
   const params = useLocalSearchParams<{ id: string }>();
   const id = Number(params.id);
   const { data: pokemon, isPending, isError, refetch } = usePokemonDetail(id);
+  const { isFavorite } = useFavorites();
+  const toggleFavorite = useToggleFavorite();
+  const favorite = isFavorite(id);
 
   const [tab, setTab] = useState<DetailTab>('About');
   // Stays true once the Evolution tab has been opened, so the chain is fetched once and kept.
@@ -123,8 +127,20 @@ export default function PokemonDetailScreen() {
         <Animated.Text style={[styles.compactName, compactNameStyle]} numberOfLines={1}>
           {pokemon ? formatName(pokemon.name) : ''}
         </Animated.Text>
-        {/* Favourites come in #5: shown, not active yet. */}
-        <MaterialIcons name="favorite-border" size={iconSize.md} color={colors.text} />
+        <Pressable
+          onPress={() => pokemon && toggleFavorite.mutate({ pokemon, favorite })}
+          disabled={!pokemon}
+          hitSlop={spacing.sm}
+          accessibilityRole="button"
+          accessibilityLabel={favorite ? 'Remove from favorites' : 'Add to favorites'}
+          accessibilityState={{ selected: favorite }}
+        >
+          <MaterialIcons
+            name={favorite ? 'favorite' : 'favorite-border'}
+            size={iconSize.md}
+            color={favorite ? colors.favorite : colors.text}
+          />
+        </Pressable>
       </View>
       {renderBody()}
     </SafeAreaView>

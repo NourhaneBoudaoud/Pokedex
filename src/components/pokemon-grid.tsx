@@ -9,15 +9,19 @@ import type { PokemonSummary } from '@/services/pokemon';
 
 type Props = {
   pokemon: PokemonSummary[];
+  isFavorite: (id: number) => boolean;
+  onToggleFavorite: (pokemon: PokemonSummary) => void;
   ListHeaderComponent?: ReactElement;
   ListFooterComponent?: ReactElement;
   ListEmptyComponent?: ReactElement;
   onEndReached?: () => void;
 };
 
-// Two columns of cards. A tap opens the detail, ⋮ opens the card menu.
+// Two columns of cards. A tap opens the detail, ⋮ opens the card menu (open, favourite, share).
 export function PokemonGrid({
   pokemon,
+  isFavorite,
+  onToggleFavorite,
   ListHeaderComponent,
   ListFooterComponent,
   ListEmptyComponent,
@@ -34,7 +38,13 @@ export function PokemonGrid({
         <PokemonCard
           pokemon={item}
           onPress={() => openPokemon(item)}
-          onMenuPress={() => showPokemonActions(item, { onOpen: () => openPokemon(item) })}
+          onMenuPress={() =>
+            showPokemonActions(item, {
+              onOpen: () => openPokemon(item),
+              isFavorite: isFavorite(item.id),
+              onToggleFavorite: () => onToggleFavorite(item),
+            })
+          }
         />
       )}
       ListHeaderComponent={ListHeaderComponent}

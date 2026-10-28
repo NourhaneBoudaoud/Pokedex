@@ -4,6 +4,8 @@ import { formatName, getPokemonApiUrl, type PokemonSummary } from '@/services/po
 
 type Handlers = {
   onOpen: () => void;
+  isFavorite: boolean;
+  onToggleFavorite: () => void;
 };
 
 function sharePokemon(pokemon: PokemonSummary) {
@@ -13,10 +15,14 @@ function sharePokemon(pokemon: PokemonSummary) {
 }
 
 // The ⋮ menu of a card: the iOS action sheet from the design, an Alert with buttons on Android.
-export function showPokemonActions(pokemon: PokemonSummary, { onOpen }: Handlers) {
+export function showPokemonActions(
+  pokemon: PokemonSummary,
+  { onOpen, isFavorite, onToggleFavorite }: Handlers,
+) {
   const name = formatName(pokemon.name);
   const actions = [
     { label: 'Open Pokémon', run: onOpen },
+    { label: isFavorite ? 'Remove from favorites' : 'Add to favorites', run: onToggleFavorite },
     { label: 'Share', run: () => sharePokemon(pokemon) },
   ];
 
