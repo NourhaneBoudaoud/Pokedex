@@ -3,6 +3,7 @@ import { Text, View } from 'react-native';
 import { fontFamily, fontSize, spacing } from '@/constants/theme';
 import { makeStyles } from '@/hooks/use-theme';
 import { useLargeText } from '@/hooks/use-large-text';
+import { useTranslation } from '@/hooks/use-translation';
 import {
   formatHeight,
   formatLabel,
@@ -19,14 +20,19 @@ type Props = {
 export function AboutTab({ pokemon }: Props) {
   const styles = useStyles();
   const largeText = useLargeText();
+  const { t, typeName, decimalSeparator } = useTranslation();
+  // Name and abilities stay as PokeAPI gives them; the types are translated.
   const rows = [
-    { label: 'Name', value: formatName(pokemon.name) },
-    { label: 'ID', value: formatNumber(pokemon.id) },
-    { label: 'Base', value: pokemon.baseExperience === null ? '–' : `${pokemon.baseExperience} XP` },
-    { label: 'Weight', value: formatWeight(pokemon.weightHg) },
-    { label: 'Height', value: formatHeight(pokemon.heightDm) },
-    { label: 'Types', value: pokemon.types.map(formatName).join(', ') },
-    { label: 'Abilities', value: pokemon.abilities.map(formatLabel).join(', ') },
+    { label: t('about.name'), value: formatName(pokemon.name) },
+    { label: t('about.id'), value: formatNumber(pokemon.id) },
+    {
+      label: t('about.base'),
+      value: pokemon.baseExperience === null ? '–' : t('about.baseValue', { value: pokemon.baseExperience }),
+    },
+    { label: t('about.weight'), value: formatWeight(pokemon.weightHg, decimalSeparator) },
+    { label: t('about.height'), value: formatHeight(pokemon.heightDm, decimalSeparator) },
+    { label: t('about.types'), value: pokemon.types.map(typeName).join(', ') },
+    { label: t('about.abilities'), value: pokemon.abilities.map(formatLabel).join(', ') },
   ];
 
   return (

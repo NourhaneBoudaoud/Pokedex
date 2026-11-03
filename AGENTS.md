@@ -64,13 +64,18 @@ add a line here: what it is and where it lives.
   New menu entries go there.
 - Accessibility: every pressable has `accessibilityRole` + an `accessibilityLabel` naming the Pokémon ("Open Pikachu").
   A button inside another pressable is unreachable with VoiceOver: also offer it as `accessibilityActions` on the parent
-  (card ⋮, compare slot Retry). Decorative views get `aria-hidden`; `Skeleton` is hidden, spread `loadingProps` on the
+  (card ⋮, compare slot Retry). Decorative views get `aria-hidden`; `Skeleton` is hidden, spread `useLoadingProps()` on the
   view holding a placeholder so it says "Loading" once.
   On iOS (RN 0.88) the `tab` / `tablist` / `tabbar` roles announce nothing: put the position in the label
   ("About, tab 1 of 3", see `DetailTabs`); `accessibilityState` (`selected`) is announced fine.
 - Large text: `useLargeText()` (`src/hooks/use-large-text.ts`, system text size ≥ `largeTextScale`) switches grids and
   two-column rows to one column. `maxFontSizeMultiplier={maxFontScale.*}` only on fixed-size text (badge, pills,
   detail tabs, big titles); elsewhere `minHeight`, never a fixed `height` around text.
+- Translations: every text the app writes is a key in `src/constants/translations/en.ts` (and `fr.ts`, same keys,
+  `Partial`: a missing key shows English). In screens and components use `useTranslation()`
+  (`src/hooks/use-translation.ts`): `t(key, { name })`, `statName(name)`, `typeName(name)` and `decimalSeparator`
+  (pass it to `formatHeight` / `formatWeight`). Not a hook (`showPokemonActions`): take `t: Translate` as a parameter.
+  Logic in `src/services/i18n.ts`. A new text goes in both files, never as a string in a screen or component.
 - Tests: `npm test` (Jest, `jest-expo` preset, `"types": ["jest"]` in `tsconfig.json`). Logic only, one file per feature in
   `src/services/__tests__/`. Mock `fetch` with `jest.spyOn(globalThis, 'fetch')` and a real `Response`, and the database
   by mocking `@/services/database` in `jest.mock`: no `as` cast, never the real PokeAPI.

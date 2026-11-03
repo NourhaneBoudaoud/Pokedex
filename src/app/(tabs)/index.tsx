@@ -9,9 +9,11 @@ import { fontFamily, fontSize, maxFontScale, spacing } from '@/constants/theme';
 import { makeStyles } from '@/hooks/use-theme';
 import { useFavorites, useToggleFavorite } from '@/hooks/use-favorites';
 import { usePokemonList } from '@/hooks/use-pokemon-list';
+import { useTranslation } from '@/hooks/use-translation';
 
 export default function HomeScreen() {
   const styles = useStyles();
+  const { t } = useTranslation();
   const {
     pokemon,
     isPending,
@@ -26,7 +28,7 @@ export default function HomeScreen() {
   const toggleFavorite = useToggleFavorite();
 
   const title = <Text style={styles.title} accessibilityRole="header" maxFontSizeMultiplier={maxFontScale.title}>
-      All Pokémon
+      {t('home.title')}
     </Text>;
 
   function renderContent() {
@@ -34,7 +36,7 @@ export default function HomeScreen() {
       return <PokemonGridSkeleton ListHeaderComponent={title} />;
     }
     if (isError && pokemon.length === 0) {
-      return <ErrorState message="Could not load the Pokémon." onRetry={() => refetch()} />;
+      return <ErrorState message={t('home.error')} onRetry={() => refetch()} />;
     }
     return (
       <PokemonGrid
@@ -49,7 +51,7 @@ export default function HomeScreen() {
         }}
         ListFooterComponent={
           isFetchNextPageError ? (
-            <ErrorState compact message="Could not load more." onRetry={() => fetchNextPage()} />
+            <ErrorState compact message={t('home.errorMore')} onRetry={() => fetchNextPage()} />
           ) : isFetchingNextPage ? (
             <PokemonGridSkeleton count={2} inset={false} />
           ) : undefined

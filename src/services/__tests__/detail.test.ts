@@ -3,7 +3,6 @@ import {
   flattenChain,
   formatHeight,
   formatLabel,
-  formatStatName,
   formatWeight,
   statBarRatio,
   type ChainLink,
@@ -66,6 +65,10 @@ describe('formatHeight', () => {
     expect(formatHeight(7)).toBe('0.7 m');
     expect(formatHeight(20)).toBe('2.0 m');
   });
+
+  it('uses the phone decimal separator', () => {
+    expect(formatHeight(7, ',')).toBe('0,7 m');
+  });
 });
 
 describe('formatWeight', () => {
@@ -73,24 +76,9 @@ describe('formatWeight', () => {
     expect(formatWeight(69)).toBe('6.9 kg');
     expect(formatWeight(1000)).toBe('100.0 kg');
   });
-});
 
-describe('formatStatName', () => {
-  it('writes HP in capitals', () => {
-    expect(formatStatName('hp')).toBe('HP');
-  });
-
-  it('gives the six labels of the Stats tab', () => {
-    const names = ['hp', 'attack', 'defense', 'special-attack', 'special-defense', 'speed'];
-
-    expect(names.map(formatStatName)).toEqual([
-      'HP',
-      'Attack',
-      'Defense',
-      'Special Attack',
-      'Special Defense',
-      'Speed',
-    ]);
+  it('uses the phone decimal separator', () => {
+    expect(formatWeight(69, ',')).toBe('6,9 kg');
   });
 });
 

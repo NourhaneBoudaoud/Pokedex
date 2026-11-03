@@ -60,22 +60,20 @@ export function formatLabel(name: string): string {
     .join(' ');
 }
 
-const STAT_LABELS: Record<string, string> = {
-  hp: 'HP',
-};
-
-export function formatStatName(name: string): string {
-  return STAT_LABELS[name] ?? formatLabel(name);
+// One decimal with the phone's separator (`useTranslation().decimalSeparator`): 6.9 -> "6,9" in French.
+// No thousands separator: no Pokémon reaches 1000 kg or 1000 m.
+function formatDecimal(value: number, decimalSeparator: string): string {
+  return value.toFixed(1).replace('.', decimalSeparator);
 }
 
 // PokeAPI gives decimetres: 7 -> "0.7 m"
-export function formatHeight(heightDm: number): string {
-  return `${(heightDm / 10).toFixed(1)} m`;
+export function formatHeight(heightDm: number, decimalSeparator = '.'): string {
+  return `${formatDecimal(heightDm / 10, decimalSeparator)} m`;
 }
 
 // PokeAPI gives hectograms: 69 -> "6.9 kg"
-export function formatWeight(weightHg: number): string {
-  return `${(weightHg / 10).toFixed(1)} kg`;
+export function formatWeight(weightHg: number, decimalSeparator = '.'): string {
+  return `${formatDecimal(weightHg / 10, decimalSeparator)} kg`;
 }
 
 // The design draws a full bar for about 150; a few stats go higher, so the bar is capped.

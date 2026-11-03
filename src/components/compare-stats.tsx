@@ -1,10 +1,11 @@
 import { StyleSheet, Text, View } from 'react-native';
 
-import { loadingProps, Skeleton } from '@/components/skeleton';
+import { Skeleton, useLoadingProps } from '@/components/skeleton';
 import { fontFamily, fontSize, radius, spacing } from '@/constants/theme';
 import { makeStyles } from '@/hooks/use-theme';
+import { useTranslation } from '@/hooks/use-translation';
 import type { StatComparison } from '@/services/compare';
-import { formatStatName, statBarRatio } from '@/services/pokemon';
+import { statBarRatio } from '@/services/pokemon';
 
 type Props = {
   rows: StatComparison[];
@@ -16,13 +17,14 @@ const STAT_COUNT = 6;
 // Six stats and the total. Each side: value and a bar growing from the middle; the higher side is highlighted.
 export function CompareStats({ rows, total }: Props) {
   const styles = useStyles();
+  const { t, statName } = useTranslation();
   return (
     <View style={styles.container}>
       {rows.map((row) => (
-        <CompareRow key={row.name} row={row} label={formatStatName(row.name)} />
+        <CompareRow key={row.name} row={row} label={statName(row.name)} />
       ))}
       <View style={styles.divider} />
-      <CompareRow row={total} label="Total" ratioOf={(value) => statBarRatio(value / STAT_COUNT)} />
+      <CompareRow row={total} label={t('compare.total')} ratioOf={(value) => statBarRatio(value / STAT_COUNT)} />
     </View>
   );
 }
@@ -35,10 +37,11 @@ type RowProps = {
 
 function CompareRow({ row, label, ratioOf = statBarRatio }: RowProps) {
   const styles = useStyles();
+  const { t } = useTranslation();
   const leftWins = row.winner !== 'right';
   const rightWins = row.winner !== 'left';
   return (
-    <View style={styles.row} accessible accessibilityLabel={`${label}: ${row.left} against ${row.right}`}>
+    <View style={styles.row} accessible accessibilityLabel={t('compare.row', { label, left: row.left, right: row.right })}>
       <Text style={styles.label}>{label}</Text>
       <View style={styles.sides}>
         <Text style={[styles.value, leftWins ? styles.valueWin : styles.valueLose]}>{row.left}</Text>
@@ -61,6 +64,7 @@ const LABEL_WIDTH = 96;
 
 export function CompareStatsSkeleton() {
   const styles = useStyles();
+  const loadingProps = useLoadingProps();
   return (
     <View style={styles.container} {...loadingProps}>
       {SKELETON_ROWS.map((row) => (

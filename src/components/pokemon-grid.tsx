@@ -4,9 +4,10 @@ import { FlatList, StyleSheet, View } from 'react-native';
 import { openCompare, openPokemon } from '@/components/open-pokemon';
 import { showPokemonActions } from '@/components/pokemon-actions';
 import { PokemonCard, PokemonCardSkeleton } from '@/components/pokemon-card';
-import { loadingProps } from '@/components/skeleton';
+import { useLoadingProps } from '@/components/skeleton';
 import { spacing } from '@/constants/theme';
 import { useLargeText } from '@/hooks/use-large-text';
+import { useTranslation } from '@/hooks/use-translation';
 import type { PokemonSummary } from '@/services/pokemon';
 
 type Props = {
@@ -30,6 +31,7 @@ export function PokemonGrid({
   onEndReached,
 }: Props) {
   const columns = useLargeText() ? 1 : 2;
+  const { t } = useTranslation();
   return (
     <FlatList
       // FlatList cannot change numColumns on the fly: a new key remounts it.
@@ -44,12 +46,16 @@ export function PokemonGrid({
           pokemon={item}
           onPress={() => openPokemon(item)}
           onMenuPress={() =>
-            showPokemonActions(item, {
-              onOpen: () => openPokemon(item),
-              isFavorite: isFavorite(item.id),
-              onToggleFavorite: () => onToggleFavorite(item),
-              onCompare: () => openCompare(item),
-            })
+            showPokemonActions(
+              item,
+              {
+                onOpen: () => openPokemon(item),
+                isFavorite: isFavorite(item.id),
+                onToggleFavorite: () => onToggleFavorite(item),
+                onCompare: () => openCompare(item),
+              },
+              t,
+            )
           }
         />
       )}
@@ -99,6 +105,7 @@ type SkeletonProps = {
 // inside a list footer.
 export function PokemonGridSkeleton({ ListHeaderComponent, count = SKELETON_CARDS, inset = true }: SkeletonProps) {
   const columnCount = useLargeText() ? 1 : 2;
+  const loadingProps = useLoadingProps();
   const columns = Array.from({ length: columnCount }, (_, index) => index);
   const rows = Array.from({ length: Math.ceil(count / columnCount) }, (_, index) => index);
   return (

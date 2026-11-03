@@ -3,6 +3,7 @@ import { Pressable, Text, View } from 'react-native';
 
 import { fontFamily, fontSize, iconSize, radius, spacing } from '@/constants/theme';
 import { makeStyles, useTheme } from '@/hooks/use-theme';
+import { useTranslation } from '@/hooks/use-translation';
 
 type Props = {
   message?: string;
@@ -11,20 +12,21 @@ type Props = {
   compact?: boolean;
 };
 
-export function ErrorState({ message = 'Something went wrong.', onRetry, compact = false }: Props) {
+export function ErrorState({ message, onRetry, compact = false }: Props) {
   const { colors } = useTheme();
+  const { t } = useTranslation();
   const styles = useStyles();
   return (
     <View style={[styles.container, compact && styles.compact]}>
       {!compact && <MaterialIcons name="error-outline" size={iconSize.md} color={colors.textMuted} aria-hidden />}
-      <Text style={styles.message}>{message}</Text>
+      <Text style={styles.message}>{message ?? t('error.generic')}</Text>
       <Pressable
         style={({ pressed }) => [styles.button, pressed && styles.pressed]}
         onPress={onRetry}
         accessibilityRole="button"
-        accessibilityLabel="Retry"
+        accessibilityLabel={t('common.retry')}
       >
-        <Text style={styles.buttonText}>Retry</Text>
+        <Text style={styles.buttonText}>{t('common.retry')}</Text>
       </Pressable>
     </View>
   );

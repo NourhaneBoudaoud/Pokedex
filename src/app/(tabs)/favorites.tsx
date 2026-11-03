@@ -7,15 +7,17 @@ import { PokemonGrid, PokemonGridSkeleton } from '@/components/pokemon-grid';
 import { fontFamily, fontSize, iconSize, maxFontScale, spacing } from '@/constants/theme';
 import { makeStyles, useTheme } from '@/hooks/use-theme';
 import { useFavorites, useToggleFavorite } from '@/hooks/use-favorites';
+import { useTranslation } from '@/hooks/use-translation';
 
 export default function FavoritesScreen() {
   const { colors } = useTheme();
   const styles = useStyles();
+  const { t } = useTranslation();
   const { favorites, isFavorite, isPending, isError, refetch } = useFavorites();
   const toggleFavorite = useToggleFavorite();
 
   const title = <Text style={styles.title} accessibilityRole="header" maxFontSizeMultiplier={maxFontScale.title}>
-      My favorites
+      {t('favorites.title')}
     </Text>;
 
   function renderContent() {
@@ -23,7 +25,7 @@ export default function FavoritesScreen() {
       return <PokemonGridSkeleton ListHeaderComponent={title} count={4} />;
     }
     if (isError) {
-      return <ErrorState message="Could not load your favorites." onRetry={() => refetch()} />;
+      return <ErrorState message={t('favorites.error')} onRetry={() => refetch()} />;
     }
     return (
       <PokemonGrid
@@ -34,8 +36,8 @@ export default function FavoritesScreen() {
         ListEmptyComponent={
           <View style={styles.empty}>
             <MaterialIcons name="favorite-border" size={iconSize.md} color={colors.textMuted} aria-hidden />
-            <Text style={styles.emptyTitle}>No favorites yet</Text>
-            <Text style={styles.emptyText}>Tap the heart on a Pokémon to keep it here.</Text>
+            <Text style={styles.emptyTitle}>{t('favorites.emptyTitle')}</Text>
+            <Text style={styles.emptyText}>{t('favorites.emptyText')}</Text>
           </View>
         }
       />

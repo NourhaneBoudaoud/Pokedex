@@ -7,6 +7,7 @@ import { Skeleton } from '@/components/skeleton';
 import { cardShadow, fontFamily, fontSize, iconSize, radius, spacing } from '@/constants/theme';
 import { makeStyles, useTheme } from '@/hooks/use-theme';
 import { useLargeText } from '@/hooks/use-large-text';
+import { useTranslation } from '@/hooks/use-translation';
 import { formatName, getSpriteUrl, type PokemonSummary } from '@/services/pokemon';
 
 type Props = {
@@ -22,11 +23,27 @@ type Props = {
 
 const RETRY_ACTION = 'retry';
 
+const SLOT_LABELS = {
+  first: {
+    pick: 'compare.slot.pickFirst',
+    notLoaded: 'compare.slot.notLoadedFirst',
+    loading: 'compare.slot.loadingFirst',
+  },
+  second: {
+    pick: 'compare.slot.pickSecond',
+    notLoaded: 'compare.slot.notLoadedSecond',
+    loading: 'compare.slot.loadingSecond',
+  },
+} as const;
+
 // One side of the comparison. Tap to pick or change the Pokémon.
 export function CompareSlot({ position, pokemon, isPending, isError, onPress, onRetry }: Props) {
   const { colors } = useTheme();
   const styles = useStyles();
   const largeText = useLargeText();
+  const { t } = useTranslation();
+  const labels = SLOT_LABELS[position];
+  const retry = t('common.retry');
 
   if (!pokemon) {
     return (
@@ -34,10 +51,10 @@ export function CompareSlot({ position, pokemon, isPending, isError, onPress, on
         style={[styles.card, styles.empty, largeText && styles.stacked]}
         onPress={onPress}
         accessibilityRole="button"
-        accessibilityLabel={`Pick the ${position} Pokémon`}
+        accessibilityLabel={t(labels.pick)}
       >
         <MaterialIcons name="add" size={iconSize.md} color={colors.primary} />
-        <Text style={styles.emptyText}>Pick a Pokémon</Text>
+        <Text style={styles.emptyText}>{t('compare.slot.empty')}</Text>
       </Pressable>
     );
   }
@@ -45,10 +62,10 @@ export function CompareSlot({ position, pokemon, isPending, isError, onPress, on
   const name = formatName(pokemon.name);
   // The name is only known once the Pokémon has loaded.
   const label = isError
-    ? `${capitalize(position)} Pokémon not loaded. Change it`
+    ? t(labels.notLoaded)
     : isPending
-      ? `Loading the ${position} Pokémon. Change it`
-      : `Change ${name}`;
+      ? t(labels.loading)
+      : t('compare.slot.changeName', { name });
   return (
     // VoiceOver reads the slot as one element, so the Retry inside it is offered as an action (swipe up or down).
     <Pressable
@@ -56,7 +73,7 @@ export function CompareSlot({ position, pokemon, isPending, isError, onPress, on
       onPress={onPress}
       accessibilityRole="button"
       accessibilityLabel={label}
-      accessibilityActions={isError ? [{ name: RETRY_ACTION, label: 'Retry' }] : undefined}
+      accessibilityActions={isError ? [{ name: RETRY_ACTION, label: retry }] : undefined}
       onAccessibilityAction={(event) => {
         if (event.nativeEvent.actionName === RETRY_ACTION) {
           onRetry();
@@ -72,7 +89,7 @@ export function CompareSlot({ position, pokemon, isPending, isError, onPress, on
       <View style={styles.footer}>
         {isError ? (
           <Text style={styles.failed} numberOfLines={1}>
-            Not loaded
+            {t('compare.slot.notLoaded')}
           </Text>
         ) : isPending ? (
           <Skeleton width="60%" height={fontSize.md} />
@@ -82,19 +99,15 @@ export function CompareSlot({ position, pokemon, isPending, isError, onPress, on
           </Text>
         )}
         {isError ? (
-          <Pressable onPress={onRetry} hitSlop={spacing.sm} accessibilityRole="button" accessibilityLabel="Retry">
-            <Text style={styles.retry}>Retry</Text>
+          <Pressable onPress={onRetry} hitSlop={spacing.sm} accessibilityRole="button" accessibilityLabel={retry}>
+            <Text style={styles.retry}>{retry}</Text>
           </Pressable>
         ) : (
-          <Text style={styles.change}>Change</Text>
+          <Text style={styles.change}>{t('compare.slot.change')}</Text>
         )}
       </View>
     </Pressable>
   );
-}
-
-function capitalize(text: string) {
-  return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
 const FOOTER_HEIGHT = 48;

@@ -4,8 +4,7 @@ import { Pressable, Text, TextInput, View } from 'react-native';
 import { BackButton } from '@/components/back-button';
 import { cardShadow, fontFamily, fontSize, iconSize, radius, spacing } from '@/constants/theme';
 import { makeStyles, useTheme } from '@/hooks/use-theme';
-
-export const SEARCH_PLACEHOLDER = 'Search for Pokémon..';
+import { useTranslation } from '@/hooks/use-translation';
 
 type SearchFieldProps = {
   onPress: () => void;
@@ -14,18 +13,19 @@ type SearchFieldProps = {
 // The field on the home screen. It only opens the search screen, where the real input lives.
 export function SearchField({ onPress }: SearchFieldProps) {
   const { colors } = useTheme();
+  const { t } = useTranslation();
   const styles = useStyles();
   return (
     <Pressable
       style={styles.field}
       onPress={onPress}
       accessibilityRole="button"
-      accessibilityLabel="Search for Pokémon"
-      accessibilityHint="Opens the search screen"
+      accessibilityLabel={t('search.label')}
+      accessibilityHint={t('search.hint')}
     >
       <MaterialIcons name="search" size={iconSize.md} color={colors.text} />
       <Text style={styles.placeholder} numberOfLines={1}>
-        {SEARCH_PLACEHOLDER}
+        {t('search.placeholder')}
       </Text>
     </Pressable>
   );
@@ -41,6 +41,7 @@ type SearchInputProps = {
 // The field on the search screen: same look, a back arrow instead of the search icon, focused on open.
 export function SearchInput({ value, onChangeText, onBack }: SearchInputProps) {
   const { colors } = useTheme();
+  const { t } = useTranslation();
   const styles = useStyles();
   return (
     <View style={styles.field}>
@@ -49,7 +50,7 @@ export function SearchInput({ value, onChangeText, onBack }: SearchInputProps) {
         style={styles.input}
         value={value}
         onChangeText={onChangeText}
-        placeholder={SEARCH_PLACEHOLDER}
+        placeholder={t('search.placeholder')}
         placeholderTextColor={colors.textMuted}
         selectionColor={colors.primary}
         autoFocus
@@ -57,7 +58,7 @@ export function SearchInput({ value, onChangeText, onBack }: SearchInputProps) {
         autoCapitalize="none"
         returnKeyType="search"
         clearButtonMode="while-editing"
-        accessibilityLabel="Search for Pokémon"
+        accessibilityLabel={t('search.label')}
       />
     </View>
   );

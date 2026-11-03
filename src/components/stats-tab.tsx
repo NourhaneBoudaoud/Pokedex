@@ -2,7 +2,8 @@ import { Text, View } from 'react-native';
 
 import { fontFamily, fontSize, radius, spacing } from '@/constants/theme';
 import { makeStyles } from '@/hooks/use-theme';
-import { formatStatName, statBarRatio, type PokemonStat } from '@/services/pokemon';
+import { useTranslation } from '@/hooks/use-translation';
+import { statBarRatio, type PokemonStat } from '@/services/pokemon';
 
 type Props = {
   stats: PokemonStat[];
@@ -10,12 +11,13 @@ type Props = {
 
 export function StatsTab({ stats }: Props) {
   const styles = useStyles();
+  const { statName } = useTranslation();
   return (
     <View style={styles.container}>
       {stats.map((stat) => (
         <View key={stat.name} style={styles.row}>
           <View style={styles.labels}>
-            <Text style={styles.name}>{formatStatName(stat.name)}</Text>
+            <Text style={styles.name}>{statName(stat.name)}</Text>
             <Text style={styles.value}>{stat.value}</Text>
           </View>
           <View style={styles.track}>
