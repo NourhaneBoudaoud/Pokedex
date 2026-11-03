@@ -70,7 +70,8 @@ Look up a Pokémon.
   with the same tokens in `src/constants/theme.ts` (dark palette in [design.md](./design.md#dark-mode)), read through
   `useTheme()` / `makeStyles()`; type colours unchanged; every text at least 4.5:1 in both modes, checked by a test
   (light mode fixed on the way: muted text 60 % instead of 50 %).
-- [x] Localization: English and French, the app follows the phone's language (#16). The language comes from
+- [x] Localization: English and French, the app follows the phone's language (#16, checked on the phone
+  in both languages). The language comes from
   `expo-localization` (in Expo Go); any language other than French shows English. Every text of the app is in
   `src/constants/translations/en.ts` and `fr.ts` (a key missing in French shows the English text, checked by a test).
   Pokémon names and abilities stay as PokeAPI gives them; stat and type names are translated (PV, Attaque Spé.,
