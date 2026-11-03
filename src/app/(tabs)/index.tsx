@@ -1,15 +1,17 @@
 import { router } from 'expo-router';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ErrorState } from '@/components/error-state';
 import { PokemonGrid, PokemonGridSkeleton } from '@/components/pokemon-grid';
 import { SearchField } from '@/components/search-field';
-import { colors, fontFamily, fontSize, maxFontScale, spacing } from '@/constants/theme';
+import { fontFamily, fontSize, maxFontScale, spacing } from '@/constants/theme';
+import { makeStyles } from '@/hooks/use-theme';
 import { useFavorites, useToggleFavorite } from '@/hooks/use-favorites';
 import { usePokemonList } from '@/hooks/use-pokemon-list';
 
 export default function HomeScreen() {
+  const styles = useStyles();
   const {
     pokemon,
     isPending,
@@ -66,7 +68,7 @@ export default function HomeScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((colors) => ({
   container: {
     flex: 1,
     backgroundColor: colors.background,
@@ -81,4 +83,4 @@ const styles = StyleSheet.create({
     color: colors.text,
     marginTop: spacing.lg,
   },
-});
+}));

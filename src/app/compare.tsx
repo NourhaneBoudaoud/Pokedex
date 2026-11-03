@@ -1,6 +1,6 @@
 import { useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { BackButton } from '@/components/back-button';
@@ -8,7 +8,8 @@ import { ComparePicker } from '@/components/compare-picker';
 import { CompareSlot } from '@/components/compare-slot';
 import { CompareStats, CompareStatsSkeleton } from '@/components/compare-stats';
 import { ErrorState } from '@/components/error-state';
-import { colors, fontFamily, fontSize, maxFontScale, radius, shadow, spacing } from '@/constants/theme';
+import { cardShadow, fontFamily, fontSize, maxFontScale, radius, spacing } from '@/constants/theme';
+import { makeStyles } from '@/hooks/use-theme';
 import { useLargeText } from '@/hooks/use-large-text';
 import { usePokemonDetail } from '@/hooks/use-pokemon-detail';
 import { usePokemonSearch } from '@/hooks/use-pokemon-search';
@@ -25,6 +26,7 @@ function parseId(value: string | undefined): number | undefined {
 }
 
 export default function CompareScreen() {
+  const styles = useStyles();
   const params = useLocalSearchParams<{ left?: string }>();
   const [leftId, setLeftId] = useState(parseId(params.left));
   const [rightId, setRightId] = useState<number | undefined>(undefined);
@@ -137,7 +139,7 @@ export default function CompareScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((colors) => ({
   container: {
     flex: 1,
     backgroundColor: colors.background,
@@ -169,7 +171,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.surface,
     borderRadius: radius.md,
     padding: spacing.md,
-    ...shadow,
+    ...cardShadow(colors),
   },
   hint: {
     textAlign: 'center',
@@ -178,4 +180,4 @@ const styles = StyleSheet.create({
     color: colors.textSecondary,
     paddingVertical: spacing.lg,
   },
-});
+}));

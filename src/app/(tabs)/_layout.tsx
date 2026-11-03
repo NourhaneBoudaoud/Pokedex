@@ -1,13 +1,13 @@
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Tabs } from 'expo-router';
 
-import { colors, fontFamily, fontSize, iconSize } from '@/constants/theme';
-
-function tabColor(focused: boolean) {
-  return focused ? colors.primary : colors.text;
-}
+import { fontFamily, fontSize, iconSize } from '@/constants/theme';
+import { useTheme } from '@/hooks/use-theme';
 
 export default function TabsLayout() {
+  const { colors } = useTheme();
+  const tabColor = (focused: boolean) => (focused ? colors.primary : colors.text);
+
   return (
     <Tabs
       screenOptions={{

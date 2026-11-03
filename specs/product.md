@@ -66,6 +66,10 @@ Look up a Pokémon.
   network state comes from `expo-network` (in Expo Go): it shows a "You are offline" banner and reloads failed queries
   when the network is back. Queries run with `networkMode: 'always'`, so offline with nothing saved a screen shows its
   error state with Retry instead of waiting forever, and saved data stays on screen when a refresh fails.
+- [x] Dark mode: follows the phone's light/dark setting and switches live (#15, checked on the phone). Two palettes
+  with the same tokens in `src/constants/theme.ts` (dark palette in [design.md](./design.md#dark-mode)), read through
+  `useTheme()` / `makeStyles()`; type colours unchanged; every text at least 4.5:1 in both modes, checked by a test
+  (light mode fixed on the way: muted text 60 % instead of 50 %).
 
 ## Out of scope
 

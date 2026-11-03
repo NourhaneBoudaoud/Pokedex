@@ -1,6 +1,7 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 
-import { colors, fontFamily, fontSize, spacing } from '@/constants/theme';
+import { fontFamily, fontSize, spacing } from '@/constants/theme';
+import { makeStyles } from '@/hooks/use-theme';
 import { useLargeText } from '@/hooks/use-large-text';
 import {
   formatHeight,
@@ -16,6 +17,7 @@ type Props = {
 };
 
 export function AboutTab({ pokemon }: Props) {
+  const styles = useStyles();
   const largeText = useLargeText();
   const rows = [
     { label: 'Name', value: formatName(pokemon.name) },
@@ -44,7 +46,7 @@ export function AboutTab({ pokemon }: Props) {
 const LABEL_WIDTH = 116;
 const LINE_HEIGHT = 22;
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((colors) => ({
   container: {
     gap: spacing.ms,
   },
@@ -71,4 +73,4 @@ const styles = StyleSheet.create({
     lineHeight: LINE_HEIGHT,
     color: colors.textSecondary,
   },
-});
+}));

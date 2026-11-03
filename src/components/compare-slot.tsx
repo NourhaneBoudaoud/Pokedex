@@ -1,10 +1,11 @@
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 
 import { NumberBadge } from '@/components/number-badge';
 import { RemoteImage } from '@/components/remote-image';
 import { Skeleton } from '@/components/skeleton';
-import { colors, fontFamily, fontSize, iconSize, radius, shadow, spacing } from '@/constants/theme';
+import { cardShadow, fontFamily, fontSize, iconSize, radius, spacing } from '@/constants/theme';
+import { makeStyles, useTheme } from '@/hooks/use-theme';
 import { useLargeText } from '@/hooks/use-large-text';
 import { formatName, getSpriteUrl, type PokemonSummary } from '@/services/pokemon';
 
@@ -23,6 +24,8 @@ const RETRY_ACTION = 'retry';
 
 // One side of the comparison. Tap to pick or change the Pokémon.
 export function CompareSlot({ position, pokemon, isPending, isError, onPress, onRetry }: Props) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   const largeText = useLargeText();
 
   if (!pokemon) {
@@ -99,12 +102,12 @@ const EMPTY_BORDER = 1.5;
 // Same proportions as a list card (163 × 211), so both slots line up when one is empty.
 const CARD_RATIO = 163 / 211;
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((colors) => ({
   card: {
     flex: 1,
     backgroundColor: colors.surface,
     borderRadius: radius.md,
-    ...shadow,
+    ...cardShadow(colors),
   },
   // Slots one under the other: sized by their content, flex: 1 would collapse them in a column.
   stacked: {
@@ -173,4 +176,4 @@ const styles = StyleSheet.create({
     fontSize: fontSize.sm,
     color: colors.primary,
   },
-});
+}));

@@ -1,6 +1,6 @@
 import { useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import Animated, {
   Extrapolation,
   interpolate,
@@ -21,7 +21,8 @@ import { openPokemon } from '@/components/open-pokemon';
 import { RemoteImage } from '@/components/remote-image';
 import { StatsTab } from '@/components/stats-tab';
 import { TypePill } from '@/components/type-pill';
-import { colors, fontFamily, fontSize, maxFontScale, spacing } from '@/constants/theme';
+import { fontFamily, fontSize, maxFontScale, spacing } from '@/constants/theme';
+import { makeStyles } from '@/hooks/use-theme';
 import { useEvolutionChain } from '@/hooks/use-evolution-chain';
 import { useFavorites, useToggleFavorite } from '@/hooks/use-favorites';
 import { useLargeText } from '@/hooks/use-large-text';
@@ -37,6 +38,7 @@ const FADE_START = 24;
 const FADE_END = 64;
 
 export default function PokemonDetailScreen() {
+  const styles = useStyles();
   const params = useLocalSearchParams<{ id: string }>();
   const id = Number(params.id);
   const { data: pokemon, isPending, isError, refetch } = usePokemonDetail(id);
@@ -153,7 +155,7 @@ export default function PokemonDetailScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((colors) => ({
   container: {
     flex: 1,
     backgroundColor: colors.background,
@@ -204,7 +206,7 @@ const styles = StyleSheet.create({
   number: {
     fontFamily: fontFamily.number,
     fontSize: fontSize.title,
-    color: colors.textFaint,
+    color: colors.textMuted,
   },
   types: {
     flexDirection: 'row',
@@ -230,4 +232,4 @@ const styles = StyleSheet.create({
     padding: spacing.lg,
     backgroundColor: colors.surface,
   },
-});
+}));

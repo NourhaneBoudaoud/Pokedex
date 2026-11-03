@@ -8,7 +8,8 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 
-import { colors, radius as radii } from '@/constants/theme';
+import { radius as radii } from '@/constants/theme';
+import { useTheme } from '@/hooks/use-theme';
 
 type Props = {
   width?: DimensionValue;
@@ -26,6 +27,7 @@ export const loadingProps = { accessible: true, accessibilityLabel: 'Loading' } 
 // A grey block in the shape of content that is still loading. It pulses so the user sees something is happening.
 // Hidden from screen readers: the placeholder around the blocks says "Loading" once (see `loadingProps`).
 export function Skeleton({ width, height, radius = radii.sm, style }: Props) {
+  const { colors } = useTheme();
   const opacity = useSharedValue(1);
 
   useEffect(() => {

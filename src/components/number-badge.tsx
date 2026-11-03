@@ -1,6 +1,7 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 
-import { colors, fontFamily, fontSize, maxFontScale, radius, spacing } from '@/constants/theme';
+import { fontFamily, fontSize, maxFontScale, radius, spacing } from '@/constants/theme';
+import { makeStyles } from '@/hooks/use-theme';
 import { formatNumber } from '@/services/pokemon';
 
 type Props = {
@@ -9,6 +10,7 @@ type Props = {
 
 // The purple "001" badge on cards and evolution cards.
 export function NumberBadge({ id }: Props) {
+  const styles = useStyles();
   return (
     <View style={styles.badge}>
       <Text style={styles.text} maxFontSizeMultiplier={maxFontScale.chip}>{formatNumber(id)}</Text>
@@ -16,7 +18,7 @@ export function NumberBadge({ id }: Props) {
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((colors) => ({
   badge: {
     alignSelf: 'flex-start',
     backgroundColor: colors.primary,
@@ -29,4 +31,4 @@ const styles = StyleSheet.create({
     fontSize: fontSize.xs,
     color: colors.onPrimary,
   },
-});
+}));

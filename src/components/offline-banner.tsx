@@ -3,13 +3,16 @@ import { useEffect } from 'react';
 import { AccessibilityInfo, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { colors, fontFamily, fontSize, iconSize, spacing } from '@/constants/theme';
+import { fontFamily, fontSize, iconSize, spacing } from '@/constants/theme';
+import { makeStyles, useTheme } from '@/hooks/use-theme';
 import { useNetworkStatus } from '@/hooks/use-network-status';
 
 const MESSAGE = 'You are offline, showing saved data';
 
 // Above every screen while there is no network. It takes the top safe area, the screen below starts under it.
 export function OfflineBanner() {
+  const { colors } = useTheme();
+  const styles = useStyles();
   const { offline } = useNetworkStatus();
   const insets = useSafeAreaInsets();
 
@@ -31,7 +34,7 @@ export function OfflineBanner() {
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((colors) => ({
   banner: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -49,4 +52,4 @@ const styles = StyleSheet.create({
     fontSize: fontSize.sm,
     color: colors.text,
   },
-});
+}));

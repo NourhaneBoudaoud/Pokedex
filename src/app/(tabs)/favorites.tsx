@@ -1,13 +1,16 @@
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ErrorState } from '@/components/error-state';
 import { PokemonGrid, PokemonGridSkeleton } from '@/components/pokemon-grid';
-import { colors, fontFamily, fontSize, iconSize, maxFontScale, spacing } from '@/constants/theme';
+import { fontFamily, fontSize, iconSize, maxFontScale, spacing } from '@/constants/theme';
+import { makeStyles, useTheme } from '@/hooks/use-theme';
 import { useFavorites, useToggleFavorite } from '@/hooks/use-favorites';
 
 export default function FavoritesScreen() {
+  const { colors } = useTheme();
+  const styles = useStyles();
   const { favorites, isFavorite, isPending, isError, refetch } = useFavorites();
   const toggleFavorite = useToggleFavorite();
 
@@ -46,7 +49,7 @@ export default function FavoritesScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((colors) => ({
   container: {
     flex: 1,
     backgroundColor: colors.background,
@@ -75,4 +78,4 @@ const styles = StyleSheet.create({
     color: colors.textSecondary,
     textAlign: 'center',
   },
-});
+}));

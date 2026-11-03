@@ -1,7 +1,8 @@
 import { StyleSheet, Text, View } from 'react-native';
 
 import { loadingProps, Skeleton } from '@/components/skeleton';
-import { colors, fontFamily, fontSize, radius, spacing } from '@/constants/theme';
+import { fontFamily, fontSize, radius, spacing } from '@/constants/theme';
+import { makeStyles } from '@/hooks/use-theme';
 import type { StatComparison } from '@/services/compare';
 import { formatStatName, statBarRatio } from '@/services/pokemon';
 
@@ -14,6 +15,7 @@ const STAT_COUNT = 6;
 
 // Six stats and the total. Each side: value and a bar growing from the middle; the higher side is highlighted.
 export function CompareStats({ rows, total }: Props) {
+  const styles = useStyles();
   return (
     <View style={styles.container}>
       {rows.map((row) => (
@@ -32,6 +34,7 @@ type RowProps = {
 };
 
 function CompareRow({ row, label, ratioOf = statBarRatio }: RowProps) {
+  const styles = useStyles();
   const leftWins = row.winner !== 'right';
   const rightWins = row.winner !== 'left';
   return (
@@ -57,6 +60,7 @@ const SKELETON_ROWS = [0, 1, 2, 3, 4, 5, 6];
 const LABEL_WIDTH = 96;
 
 export function CompareStatsSkeleton() {
+  const styles = useStyles();
   return (
     <View style={styles.container} {...loadingProps}>
       {SKELETON_ROWS.map((row) => (
@@ -72,7 +76,7 @@ export function CompareStatsSkeleton() {
 const BAR_HEIGHT = 4;
 const VALUE_WIDTH = 36;
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((colors) => ({
   container: {
     gap: spacing.md + spacing.xs,
   },
@@ -135,4 +139,4 @@ const styles = StyleSheet.create({
     height: StyleSheet.hairlineWidth,
     backgroundColor: colors.divider,
   },
-});
+}));

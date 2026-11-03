@@ -1,10 +1,11 @@
 import { Fragment } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 
 import { ErrorState } from '@/components/error-state';
 import { PokemonRow, PokemonRowSkeleton, ROW_HEIGHT } from '@/components/pokemon-row';
 import { loadingProps } from '@/components/skeleton';
-import { colors, fontFamily, fontSize, spacing } from '@/constants/theme';
+import { fontFamily, fontSize, spacing } from '@/constants/theme';
+import { makeStyles } from '@/hooks/use-theme';
 import type { PokemonSummary } from '@/services/pokemon';
 
 type Props = {
@@ -16,6 +17,7 @@ type Props = {
 };
 
 export function EvolutionTab({ chain, isPending, isError, onRetry, onOpen }: Props) {
+  const styles = useStyles();
   if (isError) {
     return <ErrorState message="Could not load the evolution chain." onRetry={onRetry} />;
   }
@@ -56,6 +58,7 @@ function EvolutionSkeleton() {
 const DOTS = [0, 1, 2];
 
 function DottedLine() {
+  const styles = useStyles();
   return (
     <View style={styles.line} aria-hidden>
       {DOTS.map((dot) => (
@@ -69,7 +72,7 @@ function DottedLine() {
 const LINE_HEIGHT = 38;
 const DOT_SIZE = 2;
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((colors) => ({
   none: {
     fontFamily: fontFamily.regular,
     fontSize: fontSize.sm,
@@ -89,4 +92,4 @@ const styles = StyleSheet.create({
     borderRadius: DOT_SIZE / 2,
     backgroundColor: colors.textFaint,
   },
-});
+}));

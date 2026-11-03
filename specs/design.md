@@ -24,14 +24,48 @@ The design has one text colour, `#0E0940`, used at different opacities.
 | `onPrimary` | `#FFFFFF` | Text on `primary` |
 | `text` | `#0E0940` | Titles, names, labels |
 | `textSecondary` | `#0E0940` at 65 % | Values in About and Stats |
-| `textMuted` | `#0E0940` at 50 % | Inactive detail tab |
-| `textFaint` | `#0E0940` at 30 % | Number in the detail header, search placeholder |
+| `textMuted` | `#0E0940` at 60 % (design: 50 %) | Inactive detail tab, detail number, search placeholder |
+| `textFaint` | `#0E0940` at 30 % | Evolution dotted line, losing bar in compare (never text) |
 | `chip` | `#0E0940` at 8 % | Type pill background |
 | `divider` | `#DBDAE6` | Line under the detail tabs |
 | `track` | `#F3F3F7` | Stat bar background |
 | `favorite` | `#FF4F68` | Filled heart |
 | `tabBar` | `#EDF6FF` at 50 % | Bottom tab bar (over the list) |
 | `shadow` | `#303773` at 15 %, offset y 2, blur 15 | Cards and search field |
+
+**Contrast fixes.** The design's 50 % (`textMuted`, 3.5:1) and 30 % (`textFaint`, 2:1) are below the WCAG 4.5:1
+for text. `textMuted` is 60 % (4.9:1 on `background`), and the two texts that used `textFaint` (detail number, search
+placeholder) use `textMuted`.
+
+## Dark mode
+
+The app follows the phone's light/dark setting (`userInterfaceStyle: "automatic"`) and switches live. The Figma has no
+dark version: same layout, these colours. Both palettes have the same tokens (`lightColors`, `darkColors` in
+`theme.ts`); `src/services/__tests__/theme.test.ts` checks every text token is at least 4.5:1 on `background`,
+`surface` and `imageBackground`, and `onPrimary` on `primary`.
+
+| Token | Dark | Contrast |
+|---|---|---|
+| `background` | `#14172B` (dark blue-grey) | |
+| `surface` | `#1F2338` (cards, slightly lighter) | |
+| `imageBackground` | `#282D45` | |
+| `primary` | `#9D87FF`: lighter, `#5631E8` is 2.5:1 on `background` | 6.2 / 5.4 / 4.7 |
+| `onPrimary` | `#0E0940`: white on the lighter purple is 2.6:1 | 6.5 on `primary` |
+| `text` | `#EEEDFB` | 15.3 / 13.4 / 11.7 |
+| `textSecondary` | `#EEEDFB` at 65 % | 7.0 / 6.5 / 5.9 |
+| `textMuted` | `#EEEDFB` at 60 % | 6.2 / 5.7 / 5.3 |
+| `textFaint` | `#EEEDFB` at 30 % | lines only |
+| `chip` | `#EEEDFB` at 12 % | |
+| `divider` | `#353A52` | |
+| `track` | `#2C3149` | |
+| `favorite` | `#FF4F68` (same) | icon |
+| `tabBar` | `background` at 50 % | |
+| `skeleton` | `#EEEDFB` at 8 % | |
+| `shadow` | black at 40 % | |
+
+Contrast: on `background` / `surface` / `imageBackground`. Type colours are the same in both modes (pill dots only).
+The status bar follows the mode (`StatusBar style="auto"`). Splash: same logo on `#14172B` (a real build only: Expo Go
+shows the app icon instead of the splash).
 
 ## Type colours
 

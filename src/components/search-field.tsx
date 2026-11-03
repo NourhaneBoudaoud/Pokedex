@@ -1,8 +1,9 @@
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Pressable, Text, TextInput, View } from 'react-native';
 
 import { BackButton } from '@/components/back-button';
-import { colors, fontFamily, fontSize, iconSize, radius, shadow, spacing } from '@/constants/theme';
+import { cardShadow, fontFamily, fontSize, iconSize, radius, spacing } from '@/constants/theme';
+import { makeStyles, useTheme } from '@/hooks/use-theme';
 
 export const SEARCH_PLACEHOLDER = 'Search for Pokémon..';
 
@@ -12,6 +13,8 @@ type SearchFieldProps = {
 
 // The field on the home screen. It only opens the search screen, where the real input lives.
 export function SearchField({ onPress }: SearchFieldProps) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   return (
     <Pressable
       style={styles.field}
@@ -37,6 +40,8 @@ type SearchInputProps = {
 
 // The field on the search screen: same look, a back arrow instead of the search icon, focused on open.
 export function SearchInput({ value, onChangeText, onBack }: SearchInputProps) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   return (
     <View style={styles.field}>
       <BackButton onPress={onBack} />
@@ -45,7 +50,7 @@ export function SearchInput({ value, onChangeText, onBack }: SearchInputProps) {
         value={value}
         onChangeText={onChangeText}
         placeholder={SEARCH_PLACEHOLDER}
-        placeholderTextColor={colors.textFaint}
+        placeholderTextColor={colors.textMuted}
         selectionColor={colors.primary}
         autoFocus
         autoCorrect={false}
@@ -60,7 +65,7 @@ export function SearchInput({ value, onChangeText, onBack }: SearchInputProps) {
 
 const FIELD_HEIGHT = 48;
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((colors) => ({
   field: {
     minHeight: FIELD_HEIGHT,
     flexDirection: 'row',
@@ -69,13 +74,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.md,
     backgroundColor: colors.surface,
     borderRadius: radius.md,
-    ...shadow,
+    ...cardShadow(colors),
   },
   placeholder: {
     flexShrink: 1,
     fontFamily: fontFamily.regular,
     fontSize: fontSize.md,
-    color: colors.textFaint,
+    color: colors.textMuted,
   },
   input: {
     flex: 1,
@@ -84,4 +89,4 @@ const styles = StyleSheet.create({
     fontSize: fontSize.md,
     color: colors.text,
   },
-});
+}));
