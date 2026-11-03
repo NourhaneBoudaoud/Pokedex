@@ -10,6 +10,7 @@ import Animated, {
 
 import { radius as radii } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
+import { useTranslation } from '@/hooks/use-translation';
 
 type Props = {
   width?: DimensionValue;
@@ -22,10 +23,13 @@ const PULSE_MS = 800;
 const MIN_OPACITY = 0.4;
 
 // Spread on the view that holds a whole placeholder, so a screen reader announces it once.
-export const loadingProps = { accessible: true, accessibilityLabel: 'Loading' } as const;
+export function useLoadingProps() {
+  const { t } = useTranslation();
+  return { accessible: true, accessibilityLabel: t('common.loading') };
+}
 
 // A grey block in the shape of content that is still loading. It pulses so the user sees something is happening.
-// Hidden from screen readers: the placeholder around the blocks says "Loading" once (see `loadingProps`).
+// Hidden from screen readers: the placeholder around the blocks says "Loading" once (see `useLoadingProps`).
 export function Skeleton({ width, height, radius = radii.sm, style }: Props) {
   const { colors } = useTheme();
   const opacity = useSharedValue(1);

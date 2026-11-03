@@ -3,9 +3,10 @@ import { Text, View } from 'react-native';
 
 import { ErrorState } from '@/components/error-state';
 import { PokemonRow, PokemonRowSkeleton, ROW_HEIGHT } from '@/components/pokemon-row';
-import { loadingProps } from '@/components/skeleton';
+import { useLoadingProps } from '@/components/skeleton';
 import { fontFamily, fontSize, spacing } from '@/constants/theme';
 import { makeStyles } from '@/hooks/use-theme';
+import { useTranslation } from '@/hooks/use-translation';
 import type { PokemonSummary } from '@/services/pokemon';
 
 type Props = {
@@ -18,14 +19,15 @@ type Props = {
 
 export function EvolutionTab({ chain, isPending, isError, onRetry, onOpen }: Props) {
   const styles = useStyles();
+  const { t } = useTranslation();
   if (isError) {
-    return <ErrorState message="Could not load the evolution chain." onRetry={onRetry} />;
+    return <ErrorState message={t('evolution.error')} onRetry={onRetry} />;
   }
   if (isPending || !chain) {
     return <EvolutionSkeleton />;
   }
   if (chain.length <= 1) {
-    return <Text style={styles.none}>This Pokémon does not evolve.</Text>;
+    return <Text style={styles.none}>{t('evolution.none')}</Text>;
   }
 
   return (
@@ -33,7 +35,7 @@ export function EvolutionTab({ chain, isPending, isError, onRetry, onOpen }: Pro
       {chain.map((pokemon, index) => (
         <Fragment key={pokemon.id}>
           {index > 0 && <DottedLine />}
-          <PokemonRow pokemon={pokemon} onPress={() => onOpen(pokemon)} actionLabel="Open" />
+          <PokemonRow pokemon={pokemon} onPress={() => onOpen(pokemon)} action="open" />
         </Fragment>
       ))}
     </View>
@@ -43,6 +45,7 @@ export function EvolutionTab({ chain, isPending, isError, onRetry, onOpen }: Pro
 const SKELETON_CARDS = [0, 1, 2];
 
 function EvolutionSkeleton() {
+  const loadingProps = useLoadingProps();
   return (
     <View {...loadingProps}>
       {SKELETON_CARDS.map((card) => (

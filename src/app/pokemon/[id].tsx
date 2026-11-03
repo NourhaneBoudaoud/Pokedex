@@ -27,6 +27,7 @@ import { useEvolutionChain } from '@/hooks/use-evolution-chain';
 import { useFavorites, useToggleFavorite } from '@/hooks/use-favorites';
 import { useLargeText } from '@/hooks/use-large-text';
 import { usePokemonDetail } from '@/hooks/use-pokemon-detail';
+import { useTranslation } from '@/hooks/use-translation';
 import { formatName, formatNumber } from '@/services/pokemon';
 
 const ARTWORK_SIZE = 200;
@@ -39,6 +40,7 @@ const FADE_END = 64;
 
 export default function PokemonDetailScreen() {
   const styles = useStyles();
+  const { t } = useTranslation();
   const params = useLocalSearchParams<{ id: string }>();
   const id = Number(params.id);
   const { data: pokemon, isPending, isError, refetch } = usePokemonDetail(id);
@@ -70,7 +72,7 @@ export default function PokemonDetailScreen() {
   function renderBody() {
     // Saved data stays on screen when a refresh fails offline.
     if ((isError && !pokemon) || !Number.isInteger(id)) {
-      return <ErrorState message="Could not load this Pokémon." onRetry={() => refetch()} />;
+      return <ErrorState message={t('detail.error')} onRetry={() => refetch()} />;
     }
     if (isPending) {
       return <DetailSkeleton />;
@@ -89,7 +91,7 @@ export default function PokemonDetailScreen() {
             style={styles.titleRow}
             accessible
             accessibilityRole="header"
-            accessibilityLabel={`${name}, number ${formatNumber(pokemon.id)}`}
+            accessibilityLabel={t('detail.header', { name, number: formatNumber(pokemon.id) })}
           >
             <Text style={styles.name} numberOfLines={2} maxFontSizeMultiplier={maxFontScale.title}>
               {name}
@@ -108,7 +110,7 @@ export default function PokemonDetailScreen() {
               <RemoteImage
                 uri={pokemon.artworkUrl}
                 style={styles.artwork}
-                accessibilityLabel={`${name} artwork`}
+                accessibilityLabel={t('detail.artwork', { name })}
               />
             )}
           </View>
@@ -135,7 +137,7 @@ export default function PokemonDetailScreen() {
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <View style={styles.bar}>
-        <BackButton label="Back" />
+        <BackButton withLabel />
         {/* Hidden from screen readers: it repeats the title. Left out with a large text size: it would cover the
             back button and the heart. */}
         {!largeText && (

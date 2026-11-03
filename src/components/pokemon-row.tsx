@@ -5,6 +5,7 @@ import { RemoteImage } from '@/components/remote-image';
 import { Skeleton } from '@/components/skeleton';
 import { cardShadow, fontFamily, fontSize, radius, spacing } from '@/constants/theme';
 import { makeStyles } from '@/hooks/use-theme';
+import { useTranslation } from '@/hooks/use-translation';
 import { useLargeText } from '@/hooks/use-large-text';
 import { formatName, getSpriteUrl, type PokemonSummary } from '@/services/pokemon';
 
@@ -12,12 +13,13 @@ type Props = {
   pokemon: PokemonSummary;
   onPress: () => void;
   // What a tap does, for screen readers: "Open" in the evolution tab, "Pick" in the compare picker.
-  actionLabel: string;
+  action: 'open' | 'pick';
 };
 
 // A horizontal card: sprite on the left, badge and name on the right. Evolution tab and compare picker.
-export function PokemonRow({ pokemon, onPress, actionLabel }: Props) {
+export function PokemonRow({ pokemon, onPress, action }: Props) {
   const styles = useStyles();
+  const { t } = useTranslation();
   const name = formatName(pokemon.name);
   const largeText = useLargeText();
   return (
@@ -25,7 +27,7 @@ export function PokemonRow({ pokemon, onPress, actionLabel }: Props) {
       style={({ pressed }) => [styles.card, pressed && styles.pressed]}
       onPress={onPress}
       accessibilityRole="button"
-      accessibilityLabel={`${actionLabel} ${name}`}
+      accessibilityLabel={t(action === 'open' ? 'pokemon.open' : 'pokemon.pick', { name })}
     >
       <View style={styles.imageArea}>
         <RemoteImage uri={getSpriteUrl(pokemon.id)} style={styles.sprite} />

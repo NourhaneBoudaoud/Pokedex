@@ -2,7 +2,7 @@ import { Text, View } from 'react-native';
 
 import { fontFamily, fontSize, getTypeColor, maxFontScale, radius, spacing } from '@/constants/theme';
 import { makeStyles, useTheme } from '@/hooks/use-theme';
-import { formatName } from '@/services/pokemon';
+import { useTranslation } from '@/hooks/use-translation';
 
 type Props = {
   // PokeAPI type name: "grass", "fire", ...
@@ -12,9 +12,10 @@ type Props = {
 export function TypePill({ type }: Props) {
   const { colors } = useTheme();
   const styles = useStyles();
-  const name = formatName(type);
+  const { t, typeName } = useTranslation();
+  const name = typeName(type);
   return (
-    <View style={styles.pill} accessible accessibilityLabel={`Type: ${name}`}>
+    <View style={styles.pill} accessible accessibilityLabel={t('type.label', { name })}>
       <View style={[styles.dot, { backgroundColor: getTypeColor(type, colors) }]} aria-hidden />
       <Text style={styles.label} maxFontSizeMultiplier={maxFontScale.chip}>
         {name}

@@ -1,5 +1,6 @@
 import { ActionSheetIOS, Alert, Appearance, Platform, Share } from 'react-native';
 
+import type { Translate } from '@/services/i18n';
 import { formatName, getPokemonApiUrl, type PokemonSummary } from '@/services/pokemon';
 
 type Handlers = {
@@ -9,23 +10,25 @@ type Handlers = {
   onCompare: () => void;
 };
 
-function sharePokemon(pokemon: PokemonSummary) {
+function sharePokemon(pokemon: PokemonSummary, t: Translate) {
   const name = formatName(pokemon.name);
   // A dismissed share sheet resolves normally; there is nothing to show if sharing fails.
-  Share.share({ message: `${name}: ${getPokemonApiUrl(pokemon.id)}` }).catch(() => undefined);
+  Share.share({ message: t('menu.shareMessage', { name, url: getPokemonApiUrl(pokemon.id) }) }).catch(() => undefined);
 }
 
 // The ⋮ menu of a card: the iOS action sheet from the design, an Alert with buttons on Android.
+// Not a hook, so the caller passes `t` from `useTranslation()`.
 export function showPokemonActions(
   pokemon: PokemonSummary,
   { onOpen, isFavorite, onToggleFavorite, onCompare }: Handlers,
+  t: Translate,
 ) {
   const name = formatName(pokemon.name);
   const actions = [
-    { label: 'Open Pokémon', run: onOpen },
-    { label: isFavorite ? 'Remove from favorites' : 'Add to favorites', run: onToggleFavorite },
-    { label: 'Compare', run: onCompare },
-    { label: 'Share', run: () => sharePokemon(pokemon) },
+    { label: t('menu.open'), run: onOpen },
+    { label: t(isFavorite ? 'menu.removeFavorite' : 'menu.addFavorite'), run: onToggleFavorite },
+    { label: t('menu.compare'), run: onCompare },
+    { label: t('menu.share'), run: () => sharePokemon(pokemon, t) },
   ];
 
   if (Platform.OS === 'ios') {
@@ -34,7 +37,7 @@ export function showPokemonActions(
         title: name,
         // Same mode as the app (the Android Alert follows the system by itself).
         userInterfaceStyle: Appearance.getColorScheme() === 'dark' ? 'dark' : 'light',
-        options: [...actions.map((action) => action.label), 'Cancel'],
+        options: [...actions.map((action) => action.label), t('common.cancel')],
         cancelButtonIndex: actions.length,
       },
       (index) => actions[index]?.run(),
@@ -44,6 +47,6 @@ export function showPokemonActions(
 
   Alert.alert(name, undefined, [
     ...actions.map((action) => ({ text: action.label, onPress: action.run })),
-    { text: 'Cancel', style: 'cancel' },
+    { text: t('common.cancel'), style: 'cancel' },
   ]);
 }

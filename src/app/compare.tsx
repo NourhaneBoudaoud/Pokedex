@@ -13,6 +13,7 @@ import { makeStyles } from '@/hooks/use-theme';
 import { useLargeText } from '@/hooks/use-large-text';
 import { usePokemonDetail } from '@/hooks/use-pokemon-detail';
 import { usePokemonSearch } from '@/hooks/use-pokemon-search';
+import { useTranslation } from '@/hooks/use-translation';
 import { compareStats } from '@/services/compare';
 import type { PokemonSummary } from '@/services/pokemon';
 
@@ -27,6 +28,7 @@ function parseId(value: string | undefined): number | undefined {
 
 export default function CompareScreen() {
   const styles = useStyles();
+  const { t } = useTranslation();
   const params = useLocalSearchParams<{ left?: string }>();
   const [leftId, setLeftId] = useState(parseId(params.left));
   const [rightId, setRightId] = useState<number | undefined>(undefined);
@@ -82,7 +84,7 @@ export default function CompareScreen() {
     if (leftId === undefined || rightId === undefined) {
       return (
         <Text style={styles.hint}>
-          {leftId === undefined && rightId === undefined ? 'Pick two Pokémon to compare' : 'Pick a second Pokémon'}
+          {leftId === undefined && rightId === undefined ? t('compare.pickTwo') : t('compare.pickSecond')}
         </Text>
       );
     }
@@ -90,7 +92,7 @@ export default function CompareScreen() {
       return (
         <ErrorState
           compact
-          message="Could not load the stats."
+          message={t('compare.error')}
           onRetry={() => {
             if (leftError) left.refetch();
             if (rightError) right.refetch();
@@ -108,11 +110,11 @@ export default function CompareScreen() {
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <View style={styles.bar}>
-        <BackButton label="Back" />
+        <BackButton withLabel />
       </View>
       <ScrollView contentContainerStyle={styles.content}>
         <Text style={styles.title} accessibilityRole="header" maxFontSizeMultiplier={maxFontScale.title}>
-          Compare
+          {t('compare.title')}
         </Text>
         {/* One under the other with a large text size, so each name has the full width. */}
         <View style={[styles.slots, largeText && styles.slotsStacked]}>

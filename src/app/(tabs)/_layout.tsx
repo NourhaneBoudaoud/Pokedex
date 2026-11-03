@@ -3,9 +3,11 @@ import { Tabs } from 'expo-router';
 
 import { fontFamily, fontSize, iconSize } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
+import { useTranslation } from '@/hooks/use-translation';
 
 export default function TabsLayout() {
   const { colors } = useTheme();
+  const { t } = useTranslation();
   const tabColor = (focused: boolean) => (focused ? colors.primary : colors.text);
 
   return (
@@ -29,7 +31,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Pokémons',
+          title: t('tabs.pokemon'),
           tabBarIcon: ({ focused }) => (
             <MaterialIcons name="catching-pokemon" size={iconSize.md} color={tabColor(focused)} />
           ),
@@ -38,7 +40,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="favorites"
         options={{
-          title: 'Favorites',
+          title: t('tabs.favorites'),
           tabBarIcon: ({ focused }) => (
             <MaterialIcons
               name={focused ? 'favorite' : 'favorite-border'}

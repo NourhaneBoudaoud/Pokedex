@@ -7,6 +7,7 @@ import { Skeleton } from '@/components/skeleton';
 import { cardShadow, fontFamily, fontSize, iconSize, radius, spacing } from '@/constants/theme';
 import { makeStyles, useTheme } from '@/hooks/use-theme';
 import { useLargeText } from '@/hooks/use-large-text';
+import { useTranslation } from '@/hooks/use-translation';
 import { formatName, getSpriteUrl, type PokemonSummary } from '@/services/pokemon';
 
 type Props = {
@@ -22,6 +23,8 @@ export function PokemonCard({ pokemon, onPress, onMenuPress }: Props) {
   const styles = useStyles();
   const name = formatName(pokemon.name);
   const largeText = useLargeText();
+  const { t } = useTranslation();
+  const moreActions = t('pokemon.moreActions', { name });
 
   return (
     // VoiceOver reads the card as one element, so the ⋮ inside it is offered as an action (swipe up or down).
@@ -29,8 +32,8 @@ export function PokemonCard({ pokemon, onPress, onMenuPress }: Props) {
       style={({ pressed }) => [styles.card, largeText && styles.stacked, pressed && styles.pressed]}
       onPress={onPress}
       accessibilityRole="button"
-      accessibilityLabel={`Open ${name}`}
-      accessibilityActions={[{ name: MENU_ACTION, label: `More actions for ${name}` }]}
+      accessibilityLabel={t('pokemon.open', { name })}
+      accessibilityActions={[{ name: MENU_ACTION, label: moreActions }]}
       onAccessibilityAction={(event) => {
         if (event.nativeEvent.actionName === MENU_ACTION) {
           onMenuPress();
@@ -51,7 +54,7 @@ export function PokemonCard({ pokemon, onPress, onMenuPress }: Props) {
           onPress={onMenuPress}
           hitSlop={spacing.sm}
           accessibilityRole="button"
-          accessibilityLabel={`More actions for ${name}`}
+          accessibilityLabel={moreActions}
         >
           <MaterialIcons name="more-vert" size={iconSize.md} color={colors.text} />
         </Pressable>

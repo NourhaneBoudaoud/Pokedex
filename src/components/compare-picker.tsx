@@ -3,9 +3,10 @@ import { FlatList, Text, View } from 'react-native';
 import { ErrorState } from '@/components/error-state';
 import { PokemonRow, PokemonRowSkeleton } from '@/components/pokemon-row';
 import { SearchInput } from '@/components/search-field';
-import { loadingProps } from '@/components/skeleton';
+import { useLoadingProps } from '@/components/skeleton';
 import { fontFamily, fontSize, spacing } from '@/constants/theme';
 import { makeStyles } from '@/hooks/use-theme';
+import { useTranslation } from '@/hooks/use-translation';
 import type { PokemonSummary } from '@/services/pokemon';
 
 type Props = {
@@ -24,6 +25,8 @@ const SKELETON_ROWS = [0, 1, 2, 3];
 // Search and pick a Pokémon for one side of the comparison. Same field and filter as the search screen.
 export function ComparePicker({ text, onChangeText, results, isPending, isError, onRetry, onPick, onBack }: Props) {
   const styles = useStyles();
+  const { t } = useTranslation();
+  const loadingProps = useLoadingProps();
   function renderResults() {
     if (isPending) {
       return (
@@ -35,15 +38,15 @@ export function ComparePicker({ text, onChangeText, results, isPending, isError,
       );
     }
     if (isError) {
-      return <ErrorState message="Could not load the Pokémon names." onRetry={onRetry} />;
+      return <ErrorState message={t('search.error')} onRetry={onRetry} />;
     }
     const message =
-      text.trim() === '' ? 'Type a name to pick a Pokémon' : `No Pokémon found for "${text.trim()}"`;
+      text.trim() === '' ? t('compare.pickPicker') : t('search.noResults', { text: text.trim() });
     return (
       <FlatList
         data={results}
         keyExtractor={(item) => String(item.id)}
-        renderItem={({ item }) => <PokemonRow pokemon={item} onPress={() => onPick(item)} actionLabel="Pick" />}
+        renderItem={({ item }) => <PokemonRow pokemon={item} onPress={() => onPick(item)} action="pick" />}
         contentContainerStyle={[styles.list, results.length === 0 && styles.listEmpty]}
         ListEmptyComponent={<Text style={styles.empty}>{message}</Text>}
         keyboardShouldPersistTaps="handled"

@@ -9,9 +9,11 @@ import { fontFamily, fontSize, spacing } from '@/constants/theme';
 import { makeStyles } from '@/hooks/use-theme';
 import { useFavorites, useToggleFavorite } from '@/hooks/use-favorites';
 import { usePokemonSearch } from '@/hooks/use-pokemon-search';
+import { useTranslation } from '@/hooks/use-translation';
 
 export default function SearchScreen() {
   const styles = useStyles();
+  const { t } = useTranslation();
   const [text, setText] = useState('');
   const { results, data, isPending, isError, refetch } = usePokemonSearch(text);
   const { isFavorite } = useFavorites();
@@ -22,10 +24,10 @@ export default function SearchScreen() {
       return <PokemonGridSkeleton ListHeaderComponent={<View style={styles.header} />} />;
     }
     if (isError && !data) {
-      return <ErrorState message="Could not load the Pokémon names." onRetry={() => refetch()} />;
+      return <ErrorState message={t('search.error')} onRetry={() => refetch()} />;
     }
     const message =
-      text.trim() === '' ? 'Start typing to find a Pokémon' : `No Pokémon found for "${text.trim()}"`;
+      text.trim() === '' ? t('search.start') : t('search.noResults', { text: text.trim() });
     return (
       <PokemonGrid
         isFavorite={isFavorite}

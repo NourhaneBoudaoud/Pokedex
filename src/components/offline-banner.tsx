@@ -6,8 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { fontFamily, fontSize, iconSize, spacing } from '@/constants/theme';
 import { makeStyles, useTheme } from '@/hooks/use-theme';
 import { useNetworkStatus } from '@/hooks/use-network-status';
-
-const MESSAGE = 'You are offline, showing saved data';
+import { useTranslation } from '@/hooks/use-translation';
 
 // Above every screen while there is no network. It takes the top safe area, the screen below starts under it.
 export function OfflineBanner() {
@@ -15,21 +14,23 @@ export function OfflineBanner() {
   const styles = useStyles();
   const { offline } = useNetworkStatus();
   const insets = useSafeAreaInsets();
+  const { t } = useTranslation();
+  const message = t('offline.message');
 
   useEffect(() => {
     if (offline) {
-      AccessibilityInfo.announceForAccessibility(MESSAGE);
+      AccessibilityInfo.announceForAccessibility(message);
     }
-  }, [offline]);
+  }, [offline, message]);
 
   if (!offline) {
     return null;
   }
 
   return (
-    <View style={[styles.banner, { paddingTop: insets.top + spacing.xs }]} accessible accessibilityLabel={MESSAGE}>
+    <View style={[styles.banner, { paddingTop: insets.top + spacing.xs }]} accessible accessibilityLabel={message}>
       <MaterialIcons name="cloud-off" size={iconSize.sm} color={colors.textMuted} aria-hidden />
-      <Text style={styles.text}>{MESSAGE}</Text>
+      <Text style={styles.text}>{message}</Text>
     </View>
   );
 }
