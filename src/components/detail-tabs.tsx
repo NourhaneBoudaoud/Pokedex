@@ -1,6 +1,7 @@
-import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Platform, Pressable, Text, View } from 'react-native';
 
-import { colors, fontFamily, fontSize, maxFontScale, spacing } from '@/constants/theme';
+import { fontFamily, fontSize, maxFontScale, spacing } from '@/constants/theme';
+import { makeStyles } from '@/hooks/use-theme';
 
 export const DETAIL_TABS = ['About', 'Stats', 'Evolution'] as const;
 
@@ -18,6 +19,7 @@ function tabLabel(tab: DetailTab, index: number) {
 }
 
 export function DetailTabs({ active, onChange }: Props) {
+  const styles = useStyles();
   return (
     <View style={styles.container} accessibilityRole="tablist">
       {DETAIL_TABS.map((tab, index) => {
@@ -47,7 +49,7 @@ export function DetailTabs({ active, onChange }: Props) {
 
 const UNDERLINE = 2;
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((colors) => ({
   container: {
     flexDirection: 'row',
     paddingHorizontal: spacing.lg,
@@ -72,4 +74,4 @@ const styles = StyleSheet.create({
   labelActive: {
     color: colors.text,
   },
-});
+}));

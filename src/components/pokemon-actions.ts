@@ -1,4 +1,4 @@
-import { ActionSheetIOS, Alert, Platform, Share } from 'react-native';
+import { ActionSheetIOS, Alert, Appearance, Platform, Share } from 'react-native';
 
 import { formatName, getPokemonApiUrl, type PokemonSummary } from '@/services/pokemon';
 
@@ -32,6 +32,8 @@ export function showPokemonActions(
     ActionSheetIOS.showActionSheetWithOptions(
       {
         title: name,
+        // Same mode as the app (the Android Alert follows the system by itself).
+        userInterfaceStyle: Appearance.getColorScheme() === 'dark' ? 'dark' : 'light',
         options: [...actions.map((action) => action.label), 'Cancel'],
         cancelButtonIndex: actions.length,
       },

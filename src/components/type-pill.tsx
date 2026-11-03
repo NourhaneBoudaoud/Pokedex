@@ -1,6 +1,7 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 
-import { colors, fontFamily, fontSize, getTypeColor, maxFontScale, radius, spacing } from '@/constants/theme';
+import { fontFamily, fontSize, getTypeColor, maxFontScale, radius, spacing } from '@/constants/theme';
+import { makeStyles, useTheme } from '@/hooks/use-theme';
 import { formatName } from '@/services/pokemon';
 
 type Props = {
@@ -9,10 +10,12 @@ type Props = {
 };
 
 export function TypePill({ type }: Props) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   const name = formatName(type);
   return (
     <View style={styles.pill} accessible accessibilityLabel={`Type: ${name}`}>
-      <View style={[styles.dot, { backgroundColor: getTypeColor(type) }]} aria-hidden />
+      <View style={[styles.dot, { backgroundColor: getTypeColor(type, colors) }]} aria-hidden />
       <Text style={styles.label} maxFontSizeMultiplier={maxFontScale.chip}>
         {name}
       </Text>
@@ -23,7 +26,7 @@ export function TypePill({ type }: Props) {
 const PILL_HEIGHT = 32;
 const DOT_SIZE = 8;
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((colors) => ({
   pill: {
     height: PILL_HEIGHT,
     flexDirection: 'row',
@@ -43,4 +46,4 @@ const styles = StyleSheet.create({
     fontSize: fontSize.md,
     color: colors.text,
   },
-});
+}));

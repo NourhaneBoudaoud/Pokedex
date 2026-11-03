@@ -1,6 +1,7 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 
-import { colors, fontFamily, fontSize, radius, spacing } from '@/constants/theme';
+import { fontFamily, fontSize, radius, spacing } from '@/constants/theme';
+import { makeStyles } from '@/hooks/use-theme';
 import { formatStatName, statBarRatio, type PokemonStat } from '@/services/pokemon';
 
 type Props = {
@@ -8,6 +9,7 @@ type Props = {
 };
 
 export function StatsTab({ stats }: Props) {
+  const styles = useStyles();
   return (
     <View style={styles.container}>
       {stats.map((stat) => (
@@ -27,7 +29,7 @@ export function StatsTab({ stats }: Props) {
 
 const BAR_HEIGHT = 4;
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((colors) => ({
   container: {
     gap: spacing.md + spacing.xs,
   },
@@ -59,4 +61,4 @@ const styles = StyleSheet.create({
     borderRadius: radius.bar,
     backgroundColor: colors.primary,
   },
-});
+}));

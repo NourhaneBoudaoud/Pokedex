@@ -1,15 +1,17 @@
 import { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ErrorState } from '@/components/error-state';
 import { PokemonGrid, PokemonGridSkeleton } from '@/components/pokemon-grid';
 import { SearchInput } from '@/components/search-field';
-import { colors, fontFamily, fontSize, spacing } from '@/constants/theme';
+import { fontFamily, fontSize, spacing } from '@/constants/theme';
+import { makeStyles } from '@/hooks/use-theme';
 import { useFavorites, useToggleFavorite } from '@/hooks/use-favorites';
 import { usePokemonSearch } from '@/hooks/use-pokemon-search';
 
 export default function SearchScreen() {
+  const styles = useStyles();
   const [text, setText] = useState('');
   const { results, data, isPending, isError, refetch } = usePokemonSearch(text);
   const { isFavorite } = useFavorites();
@@ -49,7 +51,7 @@ export default function SearchScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((colors) => ({
   container: {
     flex: 1,
     backgroundColor: colors.background,
@@ -74,4 +76,4 @@ const styles = StyleSheet.create({
     color: colors.textSecondary,
     textAlign: 'center',
   },
-});
+}));

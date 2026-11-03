@@ -1,8 +1,9 @@
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { router } from 'expo-router';
-import { Pressable, StyleSheet, Text } from 'react-native';
+import { Pressable, Text } from 'react-native';
 
-import { colors, fontFamily, fontSize, iconSize, spacing } from '@/constants/theme';
+import { fontFamily, fontSize, iconSize, spacing } from '@/constants/theme';
+import { makeStyles, useTheme } from '@/hooks/use-theme';
 
 type Props = {
   // With a label: the iOS chevron and text from the detail design. Without: the plain arrow of the search field.
@@ -12,6 +13,8 @@ type Props = {
 };
 
 export function BackButton({ label, onPress = () => router.back() }: Props) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   return (
     <Pressable
       style={styles.button}
@@ -30,7 +33,7 @@ export function BackButton({ label, onPress = () => router.back() }: Props) {
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((colors) => ({
   button: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -40,4 +43,4 @@ const styles = StyleSheet.create({
     fontSize: fontSize.md,
     color: colors.text,
   },
-});
+}));

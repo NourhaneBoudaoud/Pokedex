@@ -1,9 +1,10 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 
 import { NumberBadge } from '@/components/number-badge';
 import { RemoteImage } from '@/components/remote-image';
 import { Skeleton } from '@/components/skeleton';
-import { colors, fontFamily, fontSize, radius, shadow, spacing } from '@/constants/theme';
+import { cardShadow, fontFamily, fontSize, radius, spacing } from '@/constants/theme';
+import { makeStyles } from '@/hooks/use-theme';
 import { useLargeText } from '@/hooks/use-large-text';
 import { formatName, getSpriteUrl, type PokemonSummary } from '@/services/pokemon';
 
@@ -16,6 +17,7 @@ type Props = {
 
 // A horizontal card: sprite on the left, badge and name on the right. Evolution tab and compare picker.
 export function PokemonRow({ pokemon, onPress, actionLabel }: Props) {
+  const styles = useStyles();
   const name = formatName(pokemon.name);
   const largeText = useLargeText();
   return (
@@ -42,6 +44,7 @@ const BADGE_WIDTH = 30;
 const BADGE_HEIGHT = 18;
 
 export function PokemonRowSkeleton() {
+  const styles = useStyles();
   return (
     <View style={styles.card}>
       <View style={styles.imageArea} aria-hidden />
@@ -55,13 +58,13 @@ export function PokemonRowSkeleton() {
 
 export const ROW_HEIGHT = 80;
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((colors) => ({
   card: {
     minHeight: ROW_HEIGHT,
     flexDirection: 'row',
     backgroundColor: colors.surface,
     borderRadius: radius.md,
-    ...shadow,
+    ...cardShadow(colors),
   },
   pressed: {
     opacity: 0.8,
@@ -89,4 +92,4 @@ const styles = StyleSheet.create({
     fontSize: fontSize.md,
     color: colors.text,
   },
-});
+}));

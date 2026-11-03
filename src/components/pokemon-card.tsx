@@ -4,7 +4,8 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { NumberBadge } from '@/components/number-badge';
 import { RemoteImage } from '@/components/remote-image';
 import { Skeleton } from '@/components/skeleton';
-import { colors, fontFamily, fontSize, iconSize, radius, shadow, spacing } from '@/constants/theme';
+import { cardShadow, fontFamily, fontSize, iconSize, radius, spacing } from '@/constants/theme';
+import { makeStyles, useTheme } from '@/hooks/use-theme';
 import { useLargeText } from '@/hooks/use-large-text';
 import { formatName, getSpriteUrl, type PokemonSummary } from '@/services/pokemon';
 
@@ -17,6 +18,8 @@ type Props = {
 const MENU_ACTION = 'menu';
 
 export function PokemonCard({ pokemon, onPress, onMenuPress }: Props) {
+  const { colors } = useTheme();
+  const styles = useStyles();
   const name = formatName(pokemon.name);
   const largeText = useLargeText();
 
@@ -59,6 +62,7 @@ export function PokemonCard({ pokemon, onPress, onMenuPress }: Props) {
 
 // Same size and layout as a card, shown while the list loads.
 export function PokemonCardSkeleton() {
+  const styles = useStyles();
   const largeText = useLargeText();
   return (
     <View style={[styles.card, largeText && styles.stacked]}>
@@ -79,12 +83,12 @@ const FOOTER_HEIGHT = 48;
 const BADGE_WIDTH = 30;
 const BADGE_HEIGHT = 18;
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((colors) => ({
   card: {
     flex: 1,
     backgroundColor: colors.surface,
     borderRadius: radius.md,
-    ...shadow,
+    ...cardShadow(colors),
   },
   // One card per row: sized by its content, flex: 1 would collapse it in a column.
   stacked: {
@@ -127,4 +131,4 @@ const styles = StyleSheet.create({
     fontSize: fontSize.md,
     color: colors.text,
   },
-});
+}));

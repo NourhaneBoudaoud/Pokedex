@@ -1,10 +1,11 @@
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { FlatList, Text, View } from 'react-native';
 
 import { ErrorState } from '@/components/error-state';
 import { PokemonRow, PokemonRowSkeleton } from '@/components/pokemon-row';
 import { SearchInput } from '@/components/search-field';
 import { loadingProps } from '@/components/skeleton';
-import { colors, fontFamily, fontSize, spacing } from '@/constants/theme';
+import { fontFamily, fontSize, spacing } from '@/constants/theme';
+import { makeStyles } from '@/hooks/use-theme';
 import type { PokemonSummary } from '@/services/pokemon';
 
 type Props = {
@@ -22,6 +23,7 @@ const SKELETON_ROWS = [0, 1, 2, 3];
 
 // Search and pick a Pokémon for one side of the comparison. Same field and filter as the search screen.
 export function ComparePicker({ text, onChangeText, results, isPending, isError, onRetry, onPick, onBack }: Props) {
+  const styles = useStyles();
   function renderResults() {
     if (isPending) {
       return (
@@ -60,7 +62,7 @@ export function ComparePicker({ text, onChangeText, results, isPending, isError,
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((colors) => ({
   container: {
     flex: 1,
   },
@@ -82,4 +84,4 @@ const styles = StyleSheet.create({
     fontSize: fontSize.md,
     color: colors.textSecondary,
   },
-});
+}));

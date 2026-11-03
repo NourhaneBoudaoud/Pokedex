@@ -9,7 +9,8 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 
-import { colors, iconSize, spacing } from '@/constants/theme';
+import { iconSize, spacing } from '@/constants/theme';
+import { useTheme } from '@/hooks/use-theme';
 
 type Props = {
   // Display name, for the screen reader label. Empty while the Pokémon loads.
@@ -31,6 +32,7 @@ function favoriteLabel(name: string, favorite: boolean) {
 
 // The heart of the detail bar. Adding a favourite makes it pop, so the user sees the tap worked.
 export function FavoriteButton({ name, favorite, disabled, onPress }: Props) {
+  const { colors } = useTheme();
   const reduceMotion = useReducedMotion();
   const scale = useSharedValue(1);
   const popStyle = useAnimatedStyle(() => ({ transform: [{ scale: scale.get() }] }));

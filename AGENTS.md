@@ -19,8 +19,12 @@ Features: one file per feature in `specs/features/`, one GitHub issue each.
 Reuse what is listed here, never add a second one. When you set up something new that other features will use,
 add a line here: what it is and where it lives.
 
-- Theme: `src/constants/theme.ts`. `colors`, `typeColors` + `getTypeColor(name)` (PokeAPI type name), `spacing`,
-  `radius`, `shadow` (cards and search field), `fontFamily`, `fontSize`.
+- Theme: `src/constants/theme.ts`. `lightColors` / `darkColors` (same tokens, type `Palette`), `typeColors` +
+  `getTypeColor(name, colors)` (PokeAPI type name), `cardShadow(colors)` (cards and search field), `spacing`, `radius`,
+  `fontFamily`, `fontSize`. Never import a palette in a screen or component: use `useTheme()` (`{ scheme, colors }`) and
+  `makeStyles((colors) => ({...}))` from `src/hooks/use-theme.ts` (both palettes' style sheets built once). A new
+  colour goes in both palettes; `src/services/__tests__/theme.test.ts` checks text contrast (4.5:1) with
+  `contrastRatio` (`src/services/contrast.ts`). The navigation theme and `StatusBar` are set in `src/app/_layout.tsx`.
 - Fonts: `src/hooks/use-app-fonts.ts`, called once in `src/app/_layout.tsx`, which holds the splash until they are loaded.
   Use `fontFamily.*` in styles, never a font name as a string.
 - API client: `src/services/api-client.ts`, `apiGet<T>(path)`. Every PokeAPI request goes through it; it throws `ApiError`.
