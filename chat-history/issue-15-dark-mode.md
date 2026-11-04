@@ -2,11 +2,13 @@
 
 Exported from the Claude Code cloud session. Your messages and the agent's replies are complete; each agent action (tool call) is shown as one line, without its output. The agent's internal reasoning is not included.
 
+The chat was in French. It was translated into English by Claude; commands, code and file names are unchanged.
+
 ## 👤 Nourhane · 22:52
 
-Travaille sur l'issue #15 du repo NourhaneBoudaoud/Pokedex.
-Lis d'abord AGENTS.md et l'issue (gh api repos/NourhaneBoudaoud/Pokedex/issues/15).
-Poste ton plan et une liste - [ ] en commentaire de l'issue, puis attends mon go.
+Work on issue #15 of the repo NourhaneBoudaoud/Pokedex.
+First read AGENTS.md and the issue (gh api repos/NourhaneBoudaoud/Pokedex/issues/15).
+Post your plan and a - [ ] list as a comment on the issue, then wait for my go.
 
 > 🔧 `ToolSearch`
 
@@ -40,7 +42,7 @@ grep -rn "textFaint\|textMuted\|onPrimary\|colors.primary" src --include=*.tsx |
 
 ### 🤖 Agent · 22:53
 
-Je calcule les contrastes de la palette claire actuelle et de la palette sombre que je propose, puis je poste le plan.
+I compute the contrast of the current light palette and of the dark palette I propose, then I post the plan.
 
 > 🔧 `Bash` — Compute WCAG contrast ratios for both palettes
 
@@ -52,36 +54,36 @@ cat > /tmp/claude-0/-home-user-Pokedex/0293a4bd-6b59-516b-9a76-65011e0106cb/scra
 
 ### 🤖 Agent · 22:54
 
-J'ai posté le plan et la liste de tâches sur l'issue : [NourhaneBoudaoud/Pokedex#15 (commentaire)](https://github.com/NourhaneBoudaoud/Pokedex/issues/15#issuecomment-6617558284). Je n'ai pas encore touché au code.
+I posted the plan and the task list on the issue: [NourhaneBoudaoud/Pokedex#15 (comment)](https://github.com/NourhaneBoudaoud/Pokedex/issues/15#issuecomment-6617558284). I have not touched the code yet.
 
-**Le plan :**
-- **Thème :** `theme.ts` aura une palette claire (`lightColors`) et une palette sombre (`darkColors`) avec les mêmes noms de tokens. La couleur de l'ombre passe dans la palette.
-- **Un seul hook :** `useTheme()` suit le réglage clair/sombre du téléphone et bascule en direct. Un utilitaire `makeStyles` crée les styles une seule fois par palette, et les 24 `StyleSheet.create` sont convertis.
-- **Niveau app :** `userInterfaceStyle: "automatic"` et un splash sombre dans `app.json`, plus `ThemeProvider` et `StatusBar style="auto"` dans `_layout.tsx`. Le menu de la carte (`ActionSheetIOS`) suit le mode courant.
-- **Palette sombre :** fond `#14172B`, cartes `#1F2338`, texte `#EEEDFB`, couleurs de types inchangées. Le contraste du texte est d'au moins 4,5:1 partout ; le tableau complet est dans le commentaire.
-  - Le violet `#5631E8` donne seulement 2,5:1 sur le fond sombre, donc je propose un violet plus clair, `#9D87FF`.
-  - Sur ce violet, le texte blanc ne passe pas (2,6:1) : le texte des badges et du bouton Retry devient bleu nuit (6,5:1).
-- **Contraste en mode clair :** j'ai trouvé deux problèmes.
-  - `textMuted` (50 %) est à 3,5:1 et sert pour du texte : je le monte à 60 %, ce qui donne 4,9:1.
-  - `textFaint` (30 %) est à 2,0:1 et sert pour le numéro « #001 » du détail et le placeholder de recherche : ces deux textes passent en `textMuted`. Ils seront un peu plus foncés que dans le Figma.
-- **Test :** un test sur la logique vérifiera que les deux palettes ont les mêmes tokens et que chaque texte atteint 4,5:1 dans les deux modes, pour que la règle ne puisse pas régresser.
+**The plan:**
+- **Theme:** `theme.ts` will have a light palette (`lightColors`) and a dark palette (`darkColors`) with the same token names. The shadow colour moves into the palette.
+- **One hook:** `useTheme()` follows the phone's light/dark setting and switches live. A `makeStyles` helper creates the styles only once per palette, and the 24 `StyleSheet.create` are converted.
+- **App level:** `userInterfaceStyle: "automatic"` and a dark splash in `app.json`, plus `ThemeProvider` and `StatusBar style="auto"` in `_layout.tsx`. The card menu (`ActionSheetIOS`) follows the current mode.
+- **Dark palette:** background `#14172B`, cards `#1F2338`, text `#EEEDFB`, type colours unchanged. Text contrast is at least 4.5:1 everywhere; the full table is in the comment.
+  - The purple `#5631E8` only gives 2.5:1 on the dark background, so I suggest a lighter purple, `#9D87FF`.
+  - On this purple, white text does not pass (2.6:1): the text of the badges and of the Retry button becomes navy blue (6.5:1).
+- **Contrast in light mode:** I found two problems.
+  - `textMuted` (50 %) is at 3.5:1 and is used for text: I raise it to 60 %, which gives 4.9:1.
+  - `textFaint` (30 %) is at 2.0:1 and is used for the "#001" number in the detail and the search placeholder: these two texts move to `textMuted`. They will be a bit darker than in the Figma.
+- **Test:** a logic test will check that both palettes have the same tokens and that every text reaches 4.5:1 in both modes, so the rule cannot break later.
 
-**À savoir :**
-- **Vérif sur l'iPhone :** je ne peux pas lancer Expo Go ici, donc la vérification écran par écran en mode sombre sera à faire par toi.
-- **Splash :** il est possible que le splash sombre ne s'affiche que dans un vrai build et pas dans Expo Go. Je vérifierai.
-- **Signature du commentaire :** je n'ai pas mis la mention « Generated by Claude Code » à la fin, à cause de la règle 7 d'`AGENTS.md`.
+**Good to know:**
+- **Check on the iPhone:** I cannot run Expo Go here, so the screen-by-screen check in dark mode will be up to you.
+- **Splash:** the dark splash may only show in a real build and not in Expo Go. I will check.
+- **Comment signature:** I did not put the "Generated by Claude Code" mention at the end, because of rule 7 of `AGENTS.md`.
 
-J'attends ton go.
+I am waiting for your go.
 
 ## 👤 Nourhane · 22:57
 
-donne les commandes
+give the commands
 
 ### 🤖 Agent · 22:57
 
-Rien n'est encore codé : j'attends ton go. Voici les commandes que tu pourras lancer une fois que j'aurai poussé le travail sur la branche.
+Nothing is coded yet: I am waiting for your go. Here are the commands you will be able to run once I have pushed the work to the branch.
 
-Récupérer la branche :
+Get the branch:
 
 ```bash
 git fetch origin claude/gifted-ramanujan-bpay69
@@ -91,21 +93,21 @@ git fetch origin claude/gifted-ramanujan-bpay69
 git checkout claude/gifted-ramanujan-bpay69
 ```
 
-Installer les dépendances (rien de nouveau n'est prévu, mais au cas où) :
+Install the dependencies (nothing new is planned, but just in case):
 
 ```bash
 npm install
 ```
 
-Lancer l'app et scanner le QR code avec l'appareil photo de l'iPhone pour l'ouvrir dans Expo Go :
+Start the app and scan the QR code with the iPhone camera to open it in Expo Go:
 
 ```bash
 npx expo start --clear
 ```
 
-`--clear` vide le cache de Metro : le changement de `userInterfaceStyle` dans `app.json` est bien pris en compte. Pour vérifier le mode sombre, passe l'iPhone en sombre dans Réglages → Luminosité et affichage. L'app doit basculer en direct, sans redémarrer. Le plus pratique, c'est le bouton « Mode sombre » du Centre de contrôle.
+`--clear` empties the Metro cache, so the change of `userInterfaceStyle` in `app.json` is taken into account. To check dark mode, switch the iPhone to dark in Settings → Display & Brightness. The app must switch live, without restarting. The easiest is the "Dark Mode" button in the Control Center.
 
-Les trois vérifications de l'issue (elles doivent toutes passer) :
+The three checks of the issue (they must all pass):
 
 ```bash
 npx expo lint
@@ -119,7 +121,7 @@ npx tsc --noEmit
 npm test
 ```
 
-Si tu veux que je commence, dis-moi « go ».
+If you want me to start, tell me "go".
 
 ## 👤 Nourhane · 22:57
 
@@ -183,7 +185,7 @@ sed -n 15,35p node_modules/expo-router/build/exports.d.ts; grep -n "create<\|Nam
 
 ### 🤖 Agent · 23:00
 
-Je réécris maintenant `theme.ts` avec les deux palettes, puis le hook `useTheme`. D'abord, un coup d'œil à la doc Expo SDK 58 pour les thèmes de couleurs et le splash.
+I am now rewriting `theme.ts` with the two palettes, then the `useTheme` hook. First, a look at the Expo SDK 58 docs for colour themes and the splash.
 
 > 🔧 `Bash` — Fetch Expo docs on color themes and splash
 
@@ -351,27 +353,27 @@ Pushed. Now ticking off the tasks in the plan comment on the issue.
 
 ### 🤖 Agent · 23:04
 
-Le mode sombre est codé et poussé sur `claude/gifted-ramanujan-bpay69`, en un seul commit qui finit par `closes #15`. Il reste la vérification sur l'iPhone : je ne peux pas lancer Expo Go ici, donc je n'ai vu aucun écran en mode sombre. Lint, `tsc` et `npm test` (79 tests) passent.
+Dark mode is coded and pushed to `claude/gifted-ramanujan-bpay69`, in a single commit that ends with `closes #15`. The check on the iPhone is left: I cannot run Expo Go here, so I have not seen any screen in dark mode. Lint, `tsc` and `npm test` (79 tests) pass.
 
-**Ce qui a changé**
-- **Palettes :** `theme.ts` contient maintenant `lightColors` et `darkColors`, avec les mêmes noms de tokens. Un token oublié dans l'une des deux palettes donne une erreur TypeScript. Les valeurs sombres sont celles du plan.
-- **Un seul hook :** `useTheme()` et `makeStyles((colors) => ({...}))` sont dans `src/hooks/use-theme.ts`. Les 24 feuilles de style passent par là, et il ne reste aucune couleur en dur dans les écrans ou les composants.
-- **Niveau app :**
-  - `userInterfaceStyle: "automatic"`, donc l'app bascule en direct quand le réglage du téléphone change.
-  - `_layout.tsx` a un thème de navigation construit à partir de nos palettes, plus `StatusBar style="auto"`.
-  - Le menu ⋮ suit le mode, et il y a un splash sombre.
-- **Corrections en mode clair :**
-  - `textMuted` passe de 50 % à 60 % (le contraste passe de 3,5:1 à 4,9:1).
-  - Le numéro « #001 » du détail et le placeholder de recherche, qui étaient à 2:1, utilisent maintenant `textMuted` : ils sont un peu plus foncés que dans le Figma.
-- **Test :** `theme.test.ts` vérifie que les deux palettes ont les mêmes tokens et que chaque texte atteint au moins 4,5:1 dans les deux modes.
-- **Docs :** section « Dark mode » dans `specs/design.md`, point optionnel coché dans `specs/product.md`, ligne Theme mise à jour dans `AGENTS.md`.
+**What changed**
+- **Palettes:** `theme.ts` now contains `lightColors` and `darkColors`, with the same token names. A token forgotten in one of the two palettes gives a TypeScript error. The dark values are the ones from the plan.
+- **One hook:** `useTheme()` and `makeStyles((colors) => ({...}))` are in `src/hooks/use-theme.ts`. The 24 style sheets go through it, and no hard-coded colour is left in the screens or components.
+- **App level:**
+  - `userInterfaceStyle: "automatic"`, so the app switches live when the phone's setting changes.
+  - `_layout.tsx` has a navigation theme built from our palettes, plus `StatusBar style="auto"`.
+  - The ⋮ menu follows the mode, and there is a dark splash.
+- **Fixes in light mode:**
+  - `textMuted` goes from 50 % to 60 % (the contrast goes from 3.5:1 to 4.9:1).
+  - The "#001" number in the detail and the search placeholder, which were at 2:1, now use `textMuted`: they are a bit darker than in the Figma.
+- **Test:** `theme.test.ts` checks that both palettes have the same tokens and that every text reaches at least 4.5:1 in both modes.
+- **Docs:** "Dark mode" section in `specs/design.md`, optional point ticked in `specs/product.md`, Theme line updated in `AGENTS.md`.
 
-**À savoir**
-- **Splash :** d'après la doc SDK 58, Expo Go affiche l'icône de l'app à la place du splash. Le splash sombre ne se verra donc que dans un vrai build.
-- **Commit :** je n'y ai pas mis de ligne d'attribution, à cause de la règle 7 d'`AGENTS.md`.
-- **Issue :** les tâches sont cochées dans le commentaire du plan : [NourhaneBoudaoud/Pokedex#15 (commentaire)](https://github.com/NourhaneBoudaoud/Pokedex/issues/15#issuecomment-6617558284). Seule la vérification sur l'iPhone reste ouverte.
+**Good to know**
+- **Splash:** according to the SDK 58 docs, Expo Go shows the app icon instead of the splash. So the dark splash will only be seen in a real build.
+- **Commit:** I did not put an attribution line in it, because of rule 7 of `AGENTS.md`.
+- **Issue:** the tasks are ticked in the plan comment: [NourhaneBoudaoud/Pokedex#15 (comment)](https://github.com/NourhaneBoudaoud/Pokedex/issues/15#issuecomment-6617558284). Only the check on the iPhone is still open.
 
-**Pour vérifier sur l'iPhone**
+**To check on the iPhone**
 
 ```bash
 git fetch origin claude/gifted-ramanujan-bpay69
@@ -385,25 +387,25 @@ git checkout claude/gifted-ramanujan-bpay69
 npx expo start --clear
 ```
 
-Bascule le Mode sombre depuis le Centre de contrôle et passe sur chaque écran : accueil, recherche, détail (3 onglets et en-tête compact), favoris (aussi vide), comparaison (aussi le sélecteur), placeholders de chargement, erreurs (en mode avion), menu ⋮ et barre d'état. Dis-moi si un écran ne va pas, sinon je coche la dernière tâche.
+Switch Dark Mode from the Control Center and go through every screen: home, search, detail (3 tabs and compact header), favorites (also empty), compare (also the picker), loading placeholders, errors (in airplane mode), ⋮ menu and status bar. Tell me if a screen is not right; otherwise I tick the last task.
 
 ## 👤 Nourhane · 23:07
 
-tout est bon sur l'iPhone, coche la dernière tâche
+everything is fine on the iPhone, tick the last task
 
 > 🔧 `github.update_issue_comment` 
 
 ### 🤖 Agent · 23:07
 
-J'ai coché la dernière tâche, la vérification sur l'iPhone, dans le commentaire du plan : [NourhaneBoudaoud/Pokedex#15 (commentaire)](https://github.com/NourhaneBoudaoud/Pokedex/issues/15#issuecomment-6617558284). Toute la liste est maintenant cochée.
+I ticked the last task, the check on the iPhone, in the plan comment: [NourhaneBoudaoud/Pokedex#15 (comment)](https://github.com/NourhaneBoudaoud/Pokedex/issues/15#issuecomment-6617558284). The whole list is now ticked.
 
-L'issue n'est pas encore fermée. Elle se fermera quand le commit (qui finit par `closes #15`) arrivera sur la branche par défaut.
+The issue is not closed yet. It will close when the commit (which ends with `closes #15`) reaches the default branch.
 
-Pour l'offline (#14), `specs/product.md` précise « checked on the phone ». Je peux mettre la même mention pour le Dark mode, mais ça demande de modifier le commit unique de l'issue et de repousser la branche en force (`git push --force-with-lease`). Je ne le fais que si tu me le dis.
+For offline (#14), `specs/product.md` says "checked on the phone". I can put the same mention for Dark mode, but it means changing the issue's single commit and force-pushing the branch (`git push --force-with-lease`). I only do it if you tell me to.
 
 ## 👤 Nourhane · 23:08
 
-oui, ajoute la mention et repousse
+yes, add the mention and push again
 
 > 🔧 `Bash` — Add phone-check mention, amend commit, force push
 
@@ -423,11 +425,11 @@ python3 - <<'EOF' …
 
 ### 🤖 Agent · 23:08
 
-J'ai ajouté la mention dans `specs/product.md`, intégré la modification au commit unique de l'issue et repoussé la branche en force. Le point Dark mode dit maintenant « (#15, checked on the phone) », comme pour l'offline (#14).
+I added the mention in `specs/product.md`, put the change into the issue's single commit and force-pushed the branch. The Dark mode point now says "(#15, checked on the phone)", like offline (#14).
 
-- **Commit :** il y a toujours un seul commit pour l'issue, `94307ee`, posé juste après celui de #14. Son message n'a pas changé et finit toujours par `closes #15`.
-- **Mise en page :** j'ai renvoyé le paragraphe à la ligne pour qu'il garde la même largeur que le reste du fichier. J'ai donc modifié le commit et poussé en force deux fois de suite.
-- **Ta copie locale :** si tu as déjà récupéré la branche, elle est maintenant en retard sur l'historique réécrit. Pour la remettre à jour (ça écrase tes modifications locales sur cette branche, s'il y en a) :
+- **Commit:** there is still a single commit for the issue, `94307ee`, right after the #14 one. Its message did not change and still ends with `closes #15`.
+- **Layout:** I wrapped the paragraph so it keeps the same width as the rest of the file. So I changed the commit and force-pushed twice in a row.
+- **Your local copy:** if you already fetched the branch, it is now behind the rewritten history. To update it (this overwrites your local changes on this branch, if any):
 
 ```bash
 git fetch origin claude/gifted-ramanujan-bpay69
@@ -439,7 +441,7 @@ git reset --hard origin/claude/gifted-ramanujan-bpay69
 
 ## 👤 Nourhane · 23:09
 
-ouvre une pull request pour l'issue #15
+open a pull request for issue #15
 
 > 🔧 `ToolSearch`
 
@@ -455,29 +457,29 @@ ls .github/ 2>/dev/null; ls .github/PULL_REQUEST_TEMPLATE* .github/pull_request_
 
 ### 🤖 Agent · 23:10
 
-J'ai ouvert la pull request : [NourhaneBoudaoud/Pokedex#19](https://github.com/NourhaneBoudaoud/Pokedex/pull/19), de `claude/gifted-ramanujan-bpay69` vers `main`.
+I opened the pull request: [NourhaneBoudaoud/Pokedex#19](https://github.com/NourhaneBoudaoud/Pokedex/pull/19), from `claude/gifted-ramanujan-bpay69` to `main`.
 
-La description suit le format de tes PR précédentes (#14, #13) :
-- **Closes #15 :** l'issue se fermera au merge.
-- **What changes :** les deux palettes, le hook `useTheme` / `makeStyles`, la config de l'app, la palette sombre et les corrections de contraste en mode clair.
-- **Checks :** lint, `tsc` et les 79 tests passent, la vérification sur l'iPhone est faite. Le splash sombre ne se voit que dans un vrai build.
-- **New dependencies :** aucune.
+The description follows the format of your previous PRs (#14, #13):
+- **Closes #15:** the issue will close on merge.
+- **What changes:** the two palettes, the `useTheme` / `makeStyles` hook, the app config, the dark palette and the contrast fixes in light mode.
+- **Checks:** lint, `tsc` and the 79 tests pass, the check on the iPhone is done. The dark splash only shows in a real build.
+- **New dependencies:** none.
 
-Je n'ai pas mis de ligne d'attribution, à cause de la règle 7 d'`AGENTS.md`.
+I did not put an attribution line, because of rule 7 of `AGENTS.md`.
 
-Tu veux que je suive la PR (CI et commentaires de review) pour corriger ce qui en ressort ?
+Do you want me to follow the PR (CI and review comments) to fix what comes out of it?
 
 ## 👤 Nourhane · 23:11
 
-oui
+yes
 
 > 🔧 `mcp__claude-code-remote__subscribe_pr_activity`
 
 ### 🤖 Agent · 23:11
 
-Je suis maintenant [NourhaneBoudaoud/Pokedex#19](https://github.com/NourhaneBoudaoud/Pokedex/pull/19) : les résultats de la CI, les reviews et les commentaires arriveront directement ici. Si la CI échoue ou si une review demande un changement, je reproduis le problème, je le corrige sur la branche et je relance lint, `tsc` et les tests avant de pousser.
+I am now following [NourhaneBoudaoud/Pokedex#19](https://github.com/NourhaneBoudaoud/Pokedex/pull/19): CI results, reviews and comments will come straight here. If the CI fails or a review asks for a change, I reproduce the problem, fix it on the branch and rerun lint, `tsc` and the tests before pushing.
 
-Dis-moi « arrête de suivre la PR » quand tu veux que j'arrête.
+Tell me "stop following the PR" when you want me to stop.
 
 > 🔧 `ReadNotifications`
 
@@ -499,15 +501,15 @@ ls .claude/skills 2>/dev/null; cat .github/workflows/*.yml | head -40
 
 ### 🤖 Agent · 23:12
 
-La PR [NourhaneBoudaoud/Pokedex#19](https://github.com/NourhaneBoudaoud/Pokedex/pull/19) est prête à merger : la CI est verte sur le dernier commit (lint, `tsc`, tests), il n'y a aucun conflit avec `main` et aucun commentaire de review pour l'instant.
+The PR [NourhaneBoudaoud/Pokedex#19](https://github.com/NourhaneBoudaoud/Pokedex/pull/19) is ready to merge: the CI is green on the last commit (lint, `tsc`, tests), there is no conflict with `main` and no review comment for now.
 
-**Correction :** je t'avais dit que la PR n'avait pas de ligne d'attribution, mais l'outil GitHub a ajouté tout seul « _Generated by Claude Code_ » avec un lien de session à la fin de la description. Ça va contre la règle 7 d'`AGENTS.md`. Tu veux que je modifie la description de la PR pour l'enlever ?
+**Correction:** I told you the PR had no attribution line, but the GitHub tool added by itself "_Generated by Claude Code_" with a session link at the end of the description. That goes against rule 7 of `AGENTS.md`. Do you want me to edit the PR description to remove it?
 
-Je continue de suivre la PR, et j'ai prévu une vérification de secours dans 50 minutes au cas où un événement GitHub ne m'arriverait pas.
+I keep following the PR, and I scheduled a backup check in 50 minutes in case a GitHub event does not reach me.
 
 ## 👤 Nourhane · 23:12
 
-oui, enlève-la
+yes, remove it
 
 > 🔧 `ToolSearch`
 
@@ -523,15 +525,15 @@ Removed from the PR. Checking whether the issue comment got the same footer:
 
 ### 🤖 Agent · 23:12
 
-J'ai enlevé la mention de la description de [NourhaneBoudaoud/Pokedex#19](https://github.com/NourhaneBoudaoud/Pokedex/pull/19). J'ai relu la PR après coup : la mention n'y est plus et le reste du texte n'a pas changé.
+I removed the mention from the description of [NourhaneBoudaoud/Pokedex#19](https://github.com/NourhaneBoudaoud/Pokedex/pull/19). I read the PR again afterwards: the mention is gone and the rest of the text did not change.
 
-J'ai aussi vérifié les autres textes que j'ai publiés :
-- **Commentaire du plan sur l'issue #15 :** aucune mention, rien à corriger.
-- **Commit :** aucune ligne d'attribution.
+I also checked the other texts I published:
+- **Plan comment on issue #15:** no mention, nothing to fix.
+- **Commit:** no attribution line.
 
-Le corps de l'issue #15, que tu as écrit, se termine lui aussi par cette mention. Je n'y ai pas touché.
+The body of issue #15, which you wrote, also ends with this mention. I did not touch it.
 
-La PR est toujours prête à merger : CI verte, aucun conflit, aucun commentaire de review. Je continue de la suivre.
+The PR is still ready to merge: CI green, no conflict, no review comment. I keep following it.
 
 ## 👤 Nourhane · 23:13
 
@@ -565,15 +567,15 @@ Merged. Cleaning up: stop watching the PR, cancel the check-in, and confirm the 
 
 ### 🤖 Agent · 23:13
 
-J'ai mergé [NourhaneBoudaoud/Pokedex#19](https://github.com/NourhaneBoudaoud/Pokedex/pull/19) dans `main`, et l'issue #15 s'est fermée automatiquement grâce au `closes #15` du commit.
+I merged [NourhaneBoudaoud/Pokedex#19](https://github.com/NourhaneBoudaoud/Pokedex/pull/19) into `main`, and issue #15 closed automatically thanks to the commit's `closes #15`.
 
-- **Méthode de merge :** j'ai utilisé « rebase », parce que tes PR précédentes sont arrivées sur `main` sans commit de merge. Le commit unique de l'issue arrive donc sur `main` tel quel (nouveau SHA `66b98d6`), juste après celui de #14.
-- **Avant le merge :** la CI était verte sur le dernier commit et il n'y avait aucun conflit.
-- **Suivi :** j'ai arrêté de suivre la PR et supprimé la vérification de secours prévue.
-- **Cases de l'issue :** les critères d'acceptation dans le corps de l'issue sont encore décochés (`- [ ]`). Je ne les ai pas touchés parce que c'est ton texte ; dis-moi si tu veux que je les coche.
+- **Merge method:** I used "rebase", because your previous PRs reached `main` without a merge commit. So the issue's single commit arrives on `main` as it is (new SHA `66b98d6`), right after the #14 one.
+- **Before the merge:** the CI was green on the last commit and there was no conflict.
+- **Follow-up:** I stopped following the PR and deleted the planned backup check.
+- **Issue boxes:** the acceptance criteria in the issue body are still unticked (`- [ ]`). I did not touch them because it is your text; tell me if you want me to tick them.
 
 > 🔧 `ReadNotifications`
 
 ### 🤖 Agent · 23:14
 
-GitHub a confirmé que la PR est mergée, et le suivi s'est arrêté de lui-même. Il ne reste rien à faire sur l'issue #15.
+GitHub confirmed that the PR is merged, and the follow-up stopped by itself. Nothing is left to do on issue #15.

@@ -33,7 +33,7 @@ PokeAPI cannot search. So the app loads all the names one time, and then it sear
 In issue #10, the agent made a small "pop" animation on the heart. I tested it on my iPhone and the animation was too
 small: you could almost not see it. I told the agent. It made the heart grow more (1.6 instead of 1.3) and move
 faster (`src/components/favorite-button.tsx:25-27`). I saw the problem by testing on my phone, not by reading the
-code. Chat: `chat-history/issue-10-heart-pop.md` (line 186), commit `7ed4382`.
+code. Chat: `chat-history/issue-10-heart-pop.md` (line 188), commit `7ed4382`.
 
 ---
 
